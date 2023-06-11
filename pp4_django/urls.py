@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from thoughts.views import get_thoughts
+from thoughts.views import get_thoughts, add_thought
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', get_thoughts, name='get_thoughts')
+    path('', get_thoughts, name='get_thoughts'),
+    path('add', add_thought, name='add'),
 ]
