@@ -1,29 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+<div>
     <h1>Here are some thoughts:</h1>
 
     <a href="/add">Create new thought?</a>
     
+    <!-- Displays all thoughts, hides author if anonymous -->
     {% for thought in thoughts %}
-    <h2>{{thought.title}}</h2>
-
-    <p>{{thought.content}}</p>
-        {% if thought.anonymous %}
-            <h3>By: Anonymous</h3>
-        {% else %}
-            <h3>By: {{thought.author}}</h3>
-        {% endif %}
-
-    {% empty %}
-    <p>No thoughts, head empty...<br>
-    Add new thought?</p>
+        <h2>{{thought.title}}</h2>
+        
+        <p>{{thought.content}} <br>
+            {% if thought.anonymous %}
+            <strong>By: Anonymous</strong>
+            {% else %}
+            <strong>By: {{thought.author}}</strong>
+            {% endif %}
+        </p>
+        
+        {% empty %}
+        <p>No thoughts, head empty...<br>
+        Add new thought?</p>
     {% endfor %}
-</body>
-</html>
+</div>
+{%endblock%}

@@ -16,14 +16,10 @@ def get_thoughts(request):
 
 def add_thought(request):
     if request.method == 'POST':
-        Thought.objects.create(
-            title=request.POST.get('thought_title'),
-            author=request.User,
-            content=request.POST.get('thought_content'),
-            date=request.POST.get('thought_datetime'),
-            anonymous='anonymous' in request.POST
-            )
-        return redirect('get_thoughts')
+        form = ThoughtForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('get_thoughts')
     form = ThoughtForm()
     context = {
         'form': form
