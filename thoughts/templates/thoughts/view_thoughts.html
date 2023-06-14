@@ -18,6 +18,12 @@
             {% else %}
             <strong>By: {{thought.author}}</strong>
             {% endif %}
+            <a href="/edit/{{thought.id}}">
+                <button>Edit</button>
+            </a>
+            <a href="/delete/{{thought.id}}">
+                <button>Delete</button>
+            </a>
         </p>
         
         {% empty %}

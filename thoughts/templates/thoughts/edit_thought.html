@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <h1>Edit thought:</h1>
+
+    <!-- Form to edit a thought -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <p>
+                <input type="submit" value="Update Thought">
+            </p>
+        </div>
+    </form>
+</div>
+{%endblock%}

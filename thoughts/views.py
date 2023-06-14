@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Thought
 from .forms import ThoughtForm
 
@@ -28,3 +28,23 @@ def add_thought(request):
         'form': form
     }
     return render(request, 'thoughts/add_thought.html', context)
+
+
+def edit_thought(request, thought_id):
+    thought = get_object_or_404(Thought, id=thought_id)
+    if request.method == 'POST':
+        form = ThoughtForm(request.POST, instance=thought)
+        if form.is_valid():
+            form.save()
+            return redirect('get_thoughts')
+    form = ThoughtForm(instance=thought)
+    context = {
+        'form': form
+    }
+    return render(request, 'thoughts/edit_thought.html', context)
+
+
+def delete_thought(request, thought_id):
+    thought = get_object_or_404(Thought, id=thought_id)
+    thought.delete()
+    return redirect('get_thoughts')

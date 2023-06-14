@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from thoughts.views import get_thoughts, add_thought
+from thoughts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', get_thoughts, name='get_thoughts'),
-    path('add', add_thought, name='add'),
+    path('', views.get_thoughts, name='get_thoughts'),
+    path('add', views.add_thought, name='add'),
+    path('edit/<thought_id>', views.edit_thought, name='edit'),
+    path('delete/<thought_id>', views.delete_thought, name='delete'),
 ]
