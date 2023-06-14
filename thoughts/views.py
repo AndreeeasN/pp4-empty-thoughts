@@ -18,7 +18,10 @@ def add_thought(request):
     if request.method == 'POST':
         form = ThoughtForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Sets the author to current user before saving
+            temp_form = form.save(commit=False)
+            temp_form.author = request.user
+            temp_form.save()
             return redirect('get_thoughts')
     form = ThoughtForm()
     context = {
