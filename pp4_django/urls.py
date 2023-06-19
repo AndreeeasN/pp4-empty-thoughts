@@ -23,4 +23,5 @@ urlpatterns = [
     path('add', views.add_thought, name='add'),
     path('edit/<thought_id>', views.edit_thought, name='edit'),
     path('delete/<thought_id>', views.delete_thought, name='delete'),
+    path('user/<user_id>', views.view_user, name='user'),
 ]

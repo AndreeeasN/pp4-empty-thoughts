@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Thought
+from .models import Thought, User
 from .forms import ThoughtForm
 
 # Create your views here.
@@ -10,7 +10,6 @@ def get_thoughts(request):
     context = {
         'thoughts': thoughts
     }
-
     return render(request, 'thoughts/view_thoughts.html', context)
 
 
@@ -48,3 +47,11 @@ def delete_thought(request, thought_id):
     thought = get_object_or_404(Thought, id=thought_id)
     thought.delete()
     return redirect('get_thoughts')
+
+
+def view_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    context = {
+        'user': user
+    }
+    return render(request, 'users/view_user.html', context)

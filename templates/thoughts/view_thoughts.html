@@ -19,7 +19,7 @@
                     {% if thought.anonymous %}
                     <strong>By: Anonymous</strong>
                     {% else %}
-                    <strong>By: {{thought.author}}</strong>
+                    <strong>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
                     {% endif %}</h6>
                 <p class="card-text">{{thought.content}} </p>
                 <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
