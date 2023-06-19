@@ -38,8 +38,8 @@ class TestViews(TestCase):
         response = self.client.post('/add', {
             'title': ['Test Title'],
             'content': ['Test Content'],
-            'date': ['2023-06-15 00:00:00'],
-            'initial-date': ['2023-06-15 00:00:00']
+            'time': ['20:50:36'], 
+            'initial-time': ['20:50:36'],
             })
         self.assertRedirects(response, '/')
 
