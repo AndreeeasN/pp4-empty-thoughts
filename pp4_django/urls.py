@@ -19,10 +19,7 @@ from thoughts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.get_thoughts, name='get_thoughts'),
-    path('add', views.add_thought, name='add'),
-    path('edit/<thought_id>', views.edit_thought, name='edit'),
-    path('delete/<thought_id>', views.delete_thought, name='delete'),
-    path('user/<user_id>', views.view_user, name='user'),
+    path('', include('thoughts.urls'), name='thoughts-urls'),
+    path('user/<user_id>', views.UserDetail.view_user, name='user'),
     path('accounts/', include('allauth.urls')),
 ]

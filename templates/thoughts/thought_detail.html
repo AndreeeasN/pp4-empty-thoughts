@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+<div class="container text-center">
+    <h1>{{thought.title}}</h1>
+    {% if thought.anonymous %}
+    <h2>By: Anonymous</h2>
+    {% else %}
+    <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
+    {% endif %}</h6>
+    <p class="card-text">{{thought.content}} </p>
+    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+    
+</div>
+{%endblock%}

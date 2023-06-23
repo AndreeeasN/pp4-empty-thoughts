@@ -36,13 +36,13 @@ class Thought(models.Model):
     Database model for user-submitted thoughts
     """
     title = models.CharField(
-        max_length=48, null=False, blank=False, default="Untitled Thought")
+        max_length=96, null=False, blank=False, default="Untitled Thought")
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='thoughts'
         )
-    content = models.TextField(max_length=280, null=False, blank=False)
+    content = models.TextField(max_length=400, null=False, blank=False)
     time = models.TimeField(default=timezone.now)
     anonymous = models.BooleanField(null=False, blank=False, default=True)
     # auto_now_add applies only on creation while auto_now applies on update
@@ -54,6 +54,39 @@ class Thought(models.Model):
         blank=True
         )
     tags = models.ManyToManyField(Tag, blank=True)
+
+    class Meta:
+        ordering = ['-date_created']
+
+    def number_of_likes(self):
+        return self.likes.count()
+
+    def __str__(self):
+        return str(self.title)
+
+
+class Comment(models.Model):
+    """
+    Database model for comments, to be attached to thoughts
+    """
+    thought = models.ForeignKey(
+        Thought,
+        on_delete=models.CASCADE,
+        related_name="comment_thought"
+        )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comment_author'
+        )
+    content = models.TextField(max_length=280, null=False, blank=False)
+    anonymous = models.BooleanField(null=False, blank=False, default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(
+        User,
+        related_name="comment_likes",
+        blank=True
+        )
 
     class Meta:
         ordering = ['-date_created']
