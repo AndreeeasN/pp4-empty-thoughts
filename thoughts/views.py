@@ -1,9 +1,7 @@
-from typing import Any
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic, View
 from .models import Thought, User
-from .forms import ThoughtForm
+from .forms import ThoughtForm, CommentForm
 
 
 class ThoughtList(generic.ListView):
@@ -59,9 +57,52 @@ class ThoughtDetail(View):
         context = {
                 "thought": thought,
                 "comments": comments,
-                "liked": liked
+                "liked": liked,
+                "comment_form": CommentForm(),
             }
         return render(request, "thoughts/thought_detail.html", context)
+
+    def post(self, request, *args, **kwargs):
+        thought_id = kwargs.get('thought_id')
+        queryset = Thought.objects
+        thought = get_object_or_404(queryset, id=thought_id)
+        comments = thought.comment_thought.order_by('date_created')
+        liked = False
+        if thought.likes.filter(id=self.request.user.id).exists():
+            liked = True
+
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            comment_form.instance.author = request.user
+            comment = comment_form.save(commit=False)
+            comment.thought = thought
+            comment.author = request.user
+            comment.save()
+        else:
+            comment_form = CommentForm()
+
+        context = {
+                "thought": thought,
+                "comments": comments,
+                "liked": liked,
+                "comment_form": CommentForm(),
+            }
+        return render(request, "thoughts/thought_detail.html", context)
+
+    # def post_comment(request):
+    #     if request.method == 'POST':
+    #         form = CommentForm(request.POST)
+    #         if form.is_valid():
+    #             # Sets the author to current user before saving
+    #             temp_form = form.save(commit=False)
+    #             temp_form.author = request.user
+    #             temp_form.save()
+    #             return redirect('.')
+    #     form = CommentForm()
+    #     context = {
+    #         'form': form
+    #     }
+    #     return render(request, 'thoughts/add_thought.html', context)
 
 
 class UserDetail(User):

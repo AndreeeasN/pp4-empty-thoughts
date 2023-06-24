@@ -3,16 +3,51 @@
 {% block content %}
 
 {% load static %}
-<div class="container text-center">
-    <h1>{{thought.title}}</h1>
-    {% if thought.anonymous %}
-    <h2>By: Anonymous</h2>
-    {% else %}
-    <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
-    {% endif %}</h6>
-    <p class="card-text">{{thought.content}} </p>
-    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+
+{% load crispy_forms_tags %}
+<div class="container">
+    <div class="container text-center">
+        <!-- Detailed view of specific thought -->
+        <h1>{{thought.title}}</h1>
+        {% if thought.anonymous %}
+        <h2>By: Anonymous</h2>
+        {% else %}
+        <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
+        {% endif %}</h6>
+        <p class="card-text">{{thought.content}} </p>
+        <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+        <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+    </div>
     
+    <!-- Comment form -->
+    {% if user.is_authenticated %}
+    <h3>Leave a comment:</h3>
+    <p>Posting as: {{ user.username }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form | crispy }}
+        <button type="submit" class="btn btn-outline-secondary">Post Comment</button>
+    </form>
+    {% endif %}
+
+    <!-- Displays all comments -->
+    {% for comment in comments %}
+        <div class="card center">
+            <div class="card-body">
+                {% if comment.anonymous %}
+                    Anonymous:
+                    {% else %}
+                    <h5 class="card-subtitle mb-2 text-body-secondary">
+                        <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
+                    </h5>
+                    {% endif %}
+                    <h6>{{comment.date_created}}</h6>
+                <p class="card-text">{{comment.content}} </p>
+            </div>
+        </div>
+        {% empty %}
+        <br>
+        <p>No comments yet.</p>
+    {% endfor %}
 </div>
 {%endblock%}

@@ -7,8 +7,9 @@ urlpatterns = [
     path('add', views.ThoughtList.add_thought, name='add'),
     path('edit/<thought_id>', views.ThoughtList.edit_thought, name='edit'),
     path(
-        'delete/<thought_id>', views.ThoughtList.delete_thought,
+        'delete/<thought_id>',
+        views.ThoughtList.delete_thought,
         name='delete'
         ),
-    path('view/<thought_id>', views.ThoughtDetail.as_view(), name='view')
+    path('view/<thought_id>', views.ThoughtDetail.as_view(), name='view'),
 ]

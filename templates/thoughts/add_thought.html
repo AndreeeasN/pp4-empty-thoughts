@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
+
+{% load crispy_forms_tags %}
+<div class="container">
     <h1>Add new thought:</h1>
 
     <!-- Form to create new thought -->
     <form method="post" action="add">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form | crispy }}
         <div>
             <p>
                 <input type="submit" value="Submit Thought">
