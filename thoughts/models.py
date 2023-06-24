@@ -61,6 +61,9 @@ class Thought(models.Model):
     def number_of_likes(self):
         return self.likes.count()
 
+    def number_of_comments(self):
+        return self.comment_thought.count()
+
     def __str__(self):
         return str(self.title)
 

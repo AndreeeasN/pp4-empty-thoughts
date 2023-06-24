@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic, View
+from django.contrib import messages
 from .models import Thought, User
 from .forms import ThoughtForm, CommentForm
 
@@ -8,7 +9,7 @@ class ThoughtList(generic.ListView):
     model = Thought
     queryset = Thought.objects.order_by('-date_created')
     template_name = 'thoughts/view_thoughts.html'
-    paginate_by = 4
+    paginate_by = 10
 
     def add_thought(request):
         if request.method == 'POST':
@@ -63,6 +64,16 @@ class ThoughtDetail(View):
         return render(request, "thoughts/thought_detail.html", context)
 
     def post(self, request, *args, **kwargs):
+        # Safeguard for if user somehow manages to write a
+        # comment without being logged in, redirects to login page
+        if not request.user.is_authenticated or request.user.is_anonymous:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Please sign in to leave comments.'
+                )
+            return redirect('account_login')
+
         thought_id = kwargs.get('thought_id')
         queryset = Thought.objects
         thought = get_object_or_404(queryset, id=thought_id)
@@ -78,8 +89,16 @@ class ThoughtDetail(View):
             comment.thought = thought
             comment.author = request.user
             comment.save()
+            messages.add_message(
+                request, messages.INFO,
+                'Successfully left a comment.'
+                )
         else:
             comment_form = CommentForm()
+            messages.add_message(
+                request, messages.ERROR,
+                'Comment was not posted.'
+                )
 
         context = {
                 "thought": thought,
@@ -88,21 +107,6 @@ class ThoughtDetail(View):
                 "comment_form": CommentForm(),
             }
         return render(request, "thoughts/thought_detail.html", context)
-
-    # def post_comment(request):
-    #     if request.method == 'POST':
-    #         form = CommentForm(request.POST)
-    #         if form.is_valid():
-    #             # Sets the author to current user before saving
-    #             temp_form = form.save(commit=False)
-    #             temp_form.author = request.user
-    #             temp_form.save()
-    #             return redirect('.')
-    #     form = CommentForm()
-    #     context = {
-    #         'form': form
-    #     }
-    #     return render(request, 'thoughts/add_thought.html', context)
 
 
 class UserDetail(User):
