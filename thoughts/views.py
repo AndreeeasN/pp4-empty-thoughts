@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic, View
 from django.contrib import messages
+from django.db.models import Sum
 from .models import Thought, User
 from .forms import ThoughtForm, CommentForm
 
@@ -64,7 +65,7 @@ class ThoughtDetail(View):
         return render(request, "thoughts/thought_detail.html", context)
 
     def post(self, request, *args, **kwargs):
-        # Safeguard for if user somehow manages to write a
+        # Safeguard for if user manages to write a
         # comment without being logged in, redirects to login page
         if not request.user.is_authenticated or request.user.is_anonymous:
             messages.add_message(
@@ -112,7 +113,24 @@ class ThoughtDetail(View):
 class UserDetail(User):
     def view_user(request, user_id):
         user = get_object_or_404(User, id=user_id)
+
+        # All likes on user thoughts +  comments
+        likes_given = user.thought_likes.all().count()
+        + user.comment_likes.all().count()
+
+        # Returns the amount of likes from the user posts/comments
+        thought_likes = user.thoughts.aggregate(
+            Sum('likes')
+            )['likes__sum']
+        comment_likes = user.comment_author.aggregate(
+            Sum('likes')
+            )['likes__sum']
+        # int(value or 0) as safeguard, can return Nonetype if empty
+        likes_received = int(thought_likes or 0) + int(comment_likes or 0)
+
         context = {
-            'user': user
+            'user': user,
+            'likes_given': likes_given,
+            'likes_received': likes_received
         }
         return render(request, 'users/view_user.html', context)

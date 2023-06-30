@@ -44,7 +44,7 @@
                 <li><a class="dropdown-item" href="/user/{{request.user.pk}}">Profile</a></li>
                 <li><a class="dropdown-item" href="#">#Preferences</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li id="button-logout"><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
+                <li><a id="button-logout" class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
               </ul>
             </li>
           {% else %}

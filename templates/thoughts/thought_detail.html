@@ -14,12 +14,28 @@
         {% else %}
         <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
         {% endif %}</h6>
+        <hr>
         <p class="card-text thought-content">{{thought.content}} </p>
-        {% if request.user == thought.author or request.user.is_superuser %}
-        <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-        <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
-        {% endif %}
-        <br>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <span class="">
+                {% if request.user in thought.likes.all %}
+                <i class="fa-solid fa-heart"></i>
+                {% else %}
+                <i class="fa-regular fa-heart"></i>
+                {% endif %}
+                {{ thought.number_of_likes }} | 
+                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                </span>
+            </div>
+            <div class="col">
+                {% if request.user == thought.author or request.user.is_superuser %}
+                <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+                <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
     
     <!-- Comment form -->
@@ -38,8 +54,8 @@
         <div class="card center">
             <div class="card-body">
                 {% if comment.anonymous %}
-                    Anonymous:
-                    {% else %}
+                    <h5>Anonymous</h5>
+                {% else %}
                     <h5 class="card-subtitle mb-2 text-body-secondary">
                         <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
                     </h5>

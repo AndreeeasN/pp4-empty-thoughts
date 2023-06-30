@@ -3,9 +3,18 @@
 {% block content %}
 
 {% load static %}
-<div class="container text-center">
-    <h1>User Profile:</h1>
-    <h3>Name: {{user.get_username}}</h3>
-    <h3>Member since: {{user.date_joined}}</h3>
+
+<div class="card center">
+    <div class="card-body">
+        <h2 class="card-title text-center">{{user.get_username}}</h2>
+        <hr>
+        <p class="card-text">
+        <strong>Member since: </strong> <span>{{user.date_joined.date}}</span> <br>
+        <strong>Thoughts submitted: </strong> <span>{{user.thoughts.count}}</span> <br>
+        <strong>Comments submitted: </strong> <span>{{user.comment_author.count}}</span> <br>
+        <strong>Likes given: </strong> <span>{{ likes_given }}</span> <br>
+        <strong>Likes received: </strong> <span>{{ likes_received }}</span> <br></p>
+    </div>
 </div>
+
 {%endblock%}
