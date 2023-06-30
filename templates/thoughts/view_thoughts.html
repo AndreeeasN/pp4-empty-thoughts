@@ -14,29 +14,45 @@
     {% endif %}
     <!-- Displays all thoughts, hides author if anonymous -->
     {% for thought in thought_list %}
-        <div class="card center" style="width: 18rem;">
+        <div class="card center">
             <div class="card-body">
-                <h5 class="card-title">{{thought.title}}</h5>
+                <h5 class="card-title">
+                    <a href="/view/{{thought.id}}">
+                    {{thought.title}}
+                    </a>
+                </h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">
                     {% if thought.anonymous %}
                     <strong>By: Anonymous</strong>
                     {% else %}
-                    <strong>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
+                    <strong>By: <a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
                     {% endif %}</h6>
                 <p class="card-text">{{thought.content}} </p>
                 <hr>
-                {% if request.user in thought.likes.all %}
-                <i class="fa-solid fa-heart"></i>
-                {% else %}
-                <i class="fa-regular fa-heart"></i>
-                {% endif %}
-                {{ thought.number_of_likes }} | <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
-
-                {% if request.user == thought.author or request.user.is_superuser %}
-                <a href="/view/{{thought.id}}" class="btn btn-outline-primary">?</a>
-                <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-                <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
-                {% endif %}
+                <!-- Displays amount of likes and comments -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <span class="">
+                            {% if request.user in thought.likes.all %}
+                            <i class="fa-solid fa-heart"></i>
+                            {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                            {% endif %}
+                            {{ thought.number_of_likes }} | 
+                            <a href="/view/{{thought.id}}">
+                                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                            </a>
+                            </span>
+                        </div>
+                        <div class="col">
+                            {% if request.user == thought.author or request.user.is_superuser %}
+                            <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+                            <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <br>

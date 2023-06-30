@@ -8,15 +8,18 @@
 <div class="container">
     <div class="container text-center">
         <!-- Detailed view of specific thought -->
-        <h1>{{thought.title}}</h1>
+        <h1 class="thought-title">{{thought.title}}</h1>
         {% if thought.anonymous %}
         <h2>By: Anonymous</h2>
         {% else %}
         <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
         {% endif %}</h6>
-        <p class="card-text">{{thought.content}} </p>
+        <p class="card-text thought-content">{{thought.content}} </p>
+        {% if request.user == thought.author or request.user.is_superuser %}
         <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
         <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+        {% endif %}
+        <br>
     </div>
     
     <!-- Comment form -->

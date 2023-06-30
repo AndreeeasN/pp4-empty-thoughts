@@ -18,23 +18,40 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <!-- Left aligned items -->
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/">About</a>
+            <a class="nav-link" href="/">#About</a>
           </li>
+        </ul>
+        <!-- Right-aligned items -->
+        <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'account_logout' %}">Log Out</a>
+            <!-- Placeholder user profile picture -->
+            <li class="nav-item" style="align-self: center;">
+              <div class="rounded-circle" style="background-color:dodgerblue; height: 25px; width: 25px;"></div>
+            </li>
+            <li class="nav-item dropdown">
+              <!-- Dropdown menu -->
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span id="nav-username">{{ request.user }}</span>
+              </a>
+              <!-- Dropdown menu items -->
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/user/{{request.user.pk}}">Profile</a></li>
+                <li><a class="dropdown-item" href="#">#Preferences</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li id="button-logout"><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
+              </ul>
             </li>
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'account_login' %}">Log In / Sign up</a>
             </li>
           {% endif %}
-          
         </ul>
       </div>
     </div>
