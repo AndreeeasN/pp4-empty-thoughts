@@ -129,7 +129,7 @@ class UserDetail(User):
         likes_received = int(thought_likes or 0) + int(comment_likes or 0)
 
         context = {
-            'user': user,
+            'user_detail': user,
             'likes_given': likes_given,
             'likes_received': likes_received
         }

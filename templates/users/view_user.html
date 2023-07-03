@@ -6,12 +6,12 @@
 
 <div class="card center">
     <div class="card-body">
-        <h2 class="card-title text-center">{{user.get_username}}</h2>
+        <h2 class="card-title text-center">{{user_detail.get_username}}</h2>
         <hr>
         <p class="card-text">
-        <strong>Member since: </strong> <span>{{user.date_joined.date}}</span> <br>
-        <strong>Thoughts submitted: </strong> <span>{{user.thoughts.count}}</span> <br>
-        <strong>Comments submitted: </strong> <span>{{user.comment_author.count}}</span> <br>
+        <strong>Member since: </strong> <span>{{user_detail.date_joined.date}}</span> <br>
+        <strong>Thoughts submitted: </strong> <span>{{user_detail.thoughts.count}}</span> <br>
+        <strong>Comments submitted: </strong> <span>{{user_detail.comment_author.count}}</span> <br>
         <strong>Likes given: </strong> <span>{{ likes_given }}</span> <br>
         <strong>Likes received: </strong> <span>{{ likes_received }}</span> <br></p>
     </div>
