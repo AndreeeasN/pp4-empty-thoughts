@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils import timezone
+from colorfield.fields import ColorField
 
 
 class Tag(models.Model):
@@ -11,8 +12,8 @@ class Tag(models.Model):
     to user-submitted thoughts
     """
     name = models.CharField(max_length=40)
-    text_color = models.CharField(max_length=7)
-    bg_color = models.CharField(max_length=7)
+    text_color = ColorField(default='#FF0000')
+    bg_color = ColorField(default='#FF0000')
 
     # Shows tag colors in admin menu
     @admin.display
