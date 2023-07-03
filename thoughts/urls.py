@@ -11,5 +11,10 @@ urlpatterns = [
         views.ThoughtList.delete_thought,
         name='delete'
         ),
+    path(
+        'like/<thought_id>',
+        views.ThoughtList.like_toggle_thought,
+        name='like'
+        ),
     path('view/<thought_id>', views.ThoughtDetail.as_view(), name='view'),
 ]

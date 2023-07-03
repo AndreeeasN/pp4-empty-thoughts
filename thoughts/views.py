@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.views import generic, View
 from django.contrib import messages
 from django.db.models import Sum
@@ -43,6 +43,28 @@ class ThoughtList(generic.ListView):
     def delete_thought(request, thought_id):
         thought = get_object_or_404(Thought, id=thought_id)
         thought.delete()
+        return redirect('home')
+
+    def like_toggle_thought(request, thought_id):
+        """
+        Adds user to 'likes' of specified thought,
+        if already present removes user instead
+        """
+        thought = get_object_or_404(Thought, id=thought_id)
+        user = request.user
+        # If not logged in, redirects to login page
+        if not user.is_authenticated or user.is_anonymous:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Please sign in to leave likes.'
+                )
+            return redirect('account_login')
+
+        if thought.likes.filter(id=user.id).exists():
+            thought.likes.remove(user)
+        else:
+            thought.likes.add(user)
         return redirect('home')
 
 
