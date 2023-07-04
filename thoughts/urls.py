@@ -17,4 +17,14 @@ urlpatterns = [
         name='like'
         ),
     path('view/<thought_id>', views.ThoughtDetail.as_view(), name='view'),
+    path(
+        'like_comment/<comment_id>',
+        views.ThoughtDetail.like_toggle_comment,
+        name='like_comment'
+        ),
+    path(
+        'delete_comment/<comment_id>',
+        views.ThoughtDetail.delete_comment,
+        name='delete_comment'
+        ),
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.views import generic, View
 from django.contrib import messages
 from django.db.models import Sum
-from .models import Thought, User
+from .models import Thought, User, Comment
 from .forms import ThoughtForm, CommentForm
 
 
@@ -130,6 +130,33 @@ class ThoughtDetail(View):
                 "comment_form": CommentForm(),
             }
         return render(request, "thoughts/thought_detail.html", context)
+
+    def like_toggle_comment(request, comment_id):
+        """
+        Adds user to 'likes' of specified comment,
+        if already present removes user instead
+        """
+        comment = get_object_or_404(Comment, id=comment_id)
+        user = request.user
+        # If not logged in, redirects to login page
+        if not user.is_authenticated or user.is_anonymous:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Please sign in to leave likes.'
+                )
+            return redirect('account_login')
+
+        if comment.likes.filter(id=user.id).exists():
+            comment.likes.remove(user)
+        else:
+            comment.likes.add(user)
+        return redirect(f'../view/{comment.thought.pk}')
+
+    def delete_comment(request, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        comment.delete()
+        return redirect(f'../view/{comment.thought.pk}')
 
 
 class UserDetail(User):

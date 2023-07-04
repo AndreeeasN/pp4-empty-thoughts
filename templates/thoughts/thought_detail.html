@@ -62,6 +62,26 @@
                     {% endif %}
                     <h6>{{comment.date_created}}</h6>
                 <p class="card-text">{{comment.content}} </p>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <span class="">
+                        <a href="/like_comment/{{comment.id}}">
+                        {% if request.user in comment.likes.all %}
+                        <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                        <i class="fa-regular fa-heart"></i>
+                        {% endif %}
+                        {{ comment.number_of_likes }} 
+                        </a>
+                        </span>
+                    </div>
+                    <div class="col">
+                        {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
+                        <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger">Delete</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
         {% empty %}

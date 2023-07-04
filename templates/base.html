@@ -85,12 +85,6 @@
 <!-- font-awesome script -->
 <script src="https://kit.fontawesome.com/b7d2707d73.js" crossorigin="anonymous"></script>
 <!-- Script to automatically close message boxes -->
-<script>
-  setTimeout(function() {
-    let messages = document.getElementById("msg");
-    let alert = new bootstrap.Alert(messages);
-    alert.close();
-  }, 3000);
-</script>
+<script src="{% static 'js/closeMessage.js' %}"></script>
 
 </html>
