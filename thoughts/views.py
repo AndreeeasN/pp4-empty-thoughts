@@ -17,9 +17,11 @@ class ThoughtList(generic.ListView):
             form = ThoughtForm(request.POST)
             if form.is_valid():
                 # Sets the author to current user before saving
-                temp_form = form.save(commit=False)
-                temp_form.author = request.user
-                temp_form.save()
+                thought = form.save(commit=False)
+                thought.author = request.user
+                thought.save()
+                # Saves tags (many-to-many relationship)
+                form.save_m2m()
                 return redirect('home')
         form = ThoughtForm()
         context = {

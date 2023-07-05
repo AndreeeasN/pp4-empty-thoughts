@@ -1,9 +1,11 @@
 from . import views
-from django.urls import path
+from django.urls import include, path
 
 
 urlpatterns = [
     path('', views.ThoughtList.as_view(), name='home'),
+    # django-select2, used for selecting tags
+    path("select2/", include("django_select2.urls")),
     path('add', views.ThoughtList.add_thought, name='add'),
     path('edit/<thought_id>', views.ThoughtList.edit_thought, name='edit'),
     path(

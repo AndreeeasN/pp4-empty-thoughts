@@ -19,7 +19,7 @@ class Tag(models.Model):
     @admin.display
     def colored_name(self):
         return format_html(
-            '<span style="color: {}; background-color: {}">{}</span>',
+            '<span class="btn" style="color: {}; background-color: {}">{}</span>',
             self.text_color,
             self.bg_color,
             self.name,

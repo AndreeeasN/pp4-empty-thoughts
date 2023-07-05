@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     "colorfield",
+    'django_select2',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

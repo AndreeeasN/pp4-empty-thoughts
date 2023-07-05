@@ -29,6 +29,10 @@
                     {% endif %}</h6>
                 <hr>
                 <p class="card-text">{{thought.content}} </p>
+                
+                {% for tag in thought.tags.all %}
+                <a href="#">{{ tag.colored_name }}</a>
+                {% endfor %}
                 <hr>
                 <!-- Displays amount of likes and comments -->
                 <div class="container-fluid">
@@ -59,8 +63,7 @@
         </div>
         <br>
         {% empty %}
-        <p>No thoughts, head empty...<br>
-        Add new thought?</p>
+        <p>No thoughts, head empty...</p>
     {% endfor %}
     
     <!-- Pagination Code from CI "I Think Therefore I blog" Codealong project -->

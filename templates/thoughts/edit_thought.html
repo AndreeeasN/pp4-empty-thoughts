@@ -3,6 +3,12 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
+
+<!-- Required for django-select2 -->
+{{ form.media.css }}
+<!-- Jquery used with select2 widgets -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <div class="container">
     <h1>Edit thought:</h1>
 
@@ -16,5 +22,6 @@
             </p>
         </div>
     </form>
+    {{ form.media.js }}
 </div>
 {%endblock%}

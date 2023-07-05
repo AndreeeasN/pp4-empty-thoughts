@@ -3,7 +3,14 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
+
+<!-- Required for django-select2 -->
+{{ form.media.css }}
+<!-- Jquery used with select2 widgets -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <div class="container">
+    
     <h1>Add new thought:</h1>
 
     <!-- Form to create new thought -->
@@ -11,10 +18,13 @@
         {% csrf_token %}
         {{ form | crispy }}
         <div>
-            <p>
+            <p><option value="AL">Alabama</option>
+                ...
+              <option value="WY">Wyoming</option>
                 <input type="submit" value="Submit Thought">
             </p>
         </div>
     </form>
+    {{ form.media.js }}
 </div>
 {%endblock%}
