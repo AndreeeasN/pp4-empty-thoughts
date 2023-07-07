@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "colorfield",
     'django_select2',
+    'django_filters',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

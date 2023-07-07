@@ -17,9 +17,11 @@
         <hr>
         <p class="card-text thought-content">{{thought.content}} </p>
 
-        {% for tag in thought.tags.all %}
-        <a href="#">{{ tag.colored_name }}</a>
-        {% endfor %}
+        <div class="tag-container">
+            {% for tag in thought.tags.all %}
+            <a href="/search/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
+            {% endfor %}
+        </div>
         <hr>
         <div class="row">
             <div class="col">

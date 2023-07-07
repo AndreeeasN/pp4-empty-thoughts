@@ -17,3 +17,15 @@
     max-width: 100%;
     overflow-wrap: break-word;
 }
+
+/* Tags, half-height buttons */
+.tag-container .btn{
+    --bs-btn-line-height: 1;
+}
+
+/* Overrides select2 default style for tag colors */
+/* .select2-selection__choice {
+    color: black;
+    background-color: red !important;
+    border: 1px solid black !important;
+  } */

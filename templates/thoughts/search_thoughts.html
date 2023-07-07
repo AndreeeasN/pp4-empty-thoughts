@@ -2,19 +2,23 @@
 
 {% block content %}
 
-{% load static %}
-<div class="container text-center">
-    <h1>Here are some thoughts:</h1>
-    {% if user.is_authenticated %}
-    <a href="/add">
-        <button type="button" class="btn btn-primary btn-lg">Create new thought?</button>
-    </a>
-    {% else %}
-    <br>
-    {% endif %}
-    <!-- Displays all thoughts, hides author if anonymous -->
-    {% for thought in thought_list %}
-        <div class="card center">
+{% load crispy_forms_tags %}
+
+<!-- Required for django-select2 -->
+{{ filter.form.media.css }}
+<!-- Jquery used with select2 widgets -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="container">
+    <h1>Search thought:</h1>
+    
+    <form method="get">
+        {{ filter.form | crispy }}
+        <input type="submit" value="Search">
+      </form>
+
+      {% for thought in filter.qs %}
+        <div class="card center text-center">
             <div class="card-body">
                 <h5 class="card-title">
                     <a href="/view/{{thought.id}}">
@@ -67,21 +71,8 @@
         {% empty %}
         <p>No thoughts, head empty...<br>
         Add new thought?</p>
-    {% endfor %}
-    
-    <!-- Pagination Code from CI "I Think Therefore I blog" Codealong project -->
-    {% if is_paginated %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
-            {% endif %}
-            {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
-    
+      {% endfor %}
+      
+    {{ filter.form.media.js }}
 </div>
 {%endblock%}

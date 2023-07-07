@@ -1,9 +1,10 @@
-from django.shortcuts import get_object_or_404, render, redirect, reverse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic, View
 from django.contrib import messages
 from django.db.models import Sum
 from .models import Thought, User, Comment
 from .forms import ThoughtForm, CommentForm
+from .filters import ThoughtFilter
 
 
 class ThoughtList(generic.ListView):
@@ -68,6 +69,15 @@ class ThoughtList(generic.ListView):
         else:
             thought.likes.add(user)
         return redirect('home')
+
+    def search(request):
+        thought_list = Thought.objects.all()
+        thought_filter = ThoughtFilter(request.GET, queryset=thought_list)
+        return render(
+            request,
+            'thoughts/search_thoughts.html',
+            {"filter": thought_filter}
+            )
 
 
 class ThoughtDetail(View):

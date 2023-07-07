@@ -10,7 +10,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="container">
-    
     <h1>Add new thought:</h1>
 
     <!-- Form to create new thought -->
@@ -18,9 +17,7 @@
         {% csrf_token %}
         {{ form | crispy }}
         <div>
-            <p><option value="AL">Alabama</option>
-                ...
-              <option value="WY">Wyoming</option>
+            <p>
                 <input type="submit" value="Submit Thought">
             </p>
         </div>

@@ -26,7 +26,7 @@ class Tag(models.Model):
         )
 
     def __str__(self):
-        return str(self.name)
+        return self.name
 
     class Meta:
         ordering = ['name']
@@ -66,7 +66,7 @@ class Thought(models.Model):
         return self.comment_thought.count()
 
     def __str__(self):
-        return str(self.title)
+        return self.title
 
 
 class Comment(models.Model):

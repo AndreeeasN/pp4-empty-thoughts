@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('thoughts.urls'), name='thoughts-urls'),
     path('user/<user_id>', views.UserDetail.view_user, name='user'),
+    path("select2/", include("django_select2.urls")),
     path('accounts/', include('allauth.urls')),
 ]
