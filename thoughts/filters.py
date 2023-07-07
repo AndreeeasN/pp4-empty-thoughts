@@ -43,8 +43,8 @@ class ThoughtFilter(django_filters.FilterSet):
     def filter_tags(self, queryset, name, value):
         # Only filter by tags if tags have been entered
         if value:
-            # distinct() ensures we get no duplicate results
-            queryset = queryset.filter(tags__in=value).distinct()
+            for tag in value:
+                queryset = queryset.filter(tags=tag)
         return queryset
 
     class Meta:
