@@ -2,9 +2,12 @@ asttokens==2.2.1
 backcall==0.2.0
 colorama==0.4.6
 comm==0.1.3
+cloudinary==1.33.0
 crispy-bootstrap5==0.7
 debugpy==1.6.7
 decorator==5.1.1
+dj_database_url==0.5.0
+dj3-cloudinary-storage==0.0.6
 Django==3.2.19
 django-allauth==0.54.0
 django-appconf==1.0.5
@@ -13,7 +16,6 @@ django-crispy-forms==2.0
 django-filter==23.2
 django-select2==8.1.2
 django-taggit==4.0.0
-dj_database_url==0.5.0
 executing==1.2.0
 gunicorn==20.1.0
 ipykernel==6.23.0
@@ -41,4 +43,5 @@ requests-oauthlib==1.3.1
 sqlparse==0.4.4
 tornado==6.3.1
 traitlets==5.9.0
+urllib3==1.26.16
 wcwidth==0.2.6
