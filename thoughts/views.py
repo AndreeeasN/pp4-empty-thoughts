@@ -11,7 +11,7 @@ class ThoughtList(generic.ListView):
     model = Thought
     queryset = Thought.objects.order_by('-date_created')
     template_name = 'thoughts/view_thoughts.html'
-    paginate_by = 10
+    paginate_by = 8
 
     def add_thought(request):
         if request.method == 'POST':
