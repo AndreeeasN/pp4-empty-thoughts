@@ -15,7 +15,7 @@
         <h2>By: <a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></h2>
         {% endif %}</h6>
         <hr>
-        <p class="card-text thought-content">{{thought.content}} </p>
+        <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
 
         <div class="tag-container">
             {% for tag in thought.tags.all %}

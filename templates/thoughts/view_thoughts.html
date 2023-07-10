@@ -28,7 +28,7 @@
                     <strong>By: <a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
                     {% endif %}</h6>
                 <hr>
-                <p class="card-text">{{thought.content}} </p>
+                <p class="card-text">{{thought.content | linebreaks}} </p>
                 <div class="tag-container">
                     {% for tag in thought.tags.all %}
                     <a href="/search/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
