@@ -1,7 +1,8 @@
 from django import forms
 # from django.forms.widgets import TextInput
 from .models import Thought, Comment, Tag
-from thoughts.widgets import TagWidget
+from thoughts.widgets import TagWidget, TimeWidget
+from bootstrap_datepicker_plus.widgets import TimePickerInput
 
 
 class ThoughtForm(forms.ModelForm):
@@ -13,6 +14,11 @@ class ThoughtForm(forms.ModelForm):
         widget=TagWidget,
         required=False
         )
+
+    time = forms.TimeField(
+        widget=TimeWidget,
+        required=False
+    )
 
     class Meta:
         model = Thought

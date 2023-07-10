@@ -17,24 +17,35 @@
         <div class="card center">
             <div class="card-body">
                 <h5 class="card-title">
+                    <!-- Title -->
                     <a href="/view/{{thought.id}}">
                     {{thought.title}}
                     </a>
                 </h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">
-                    {% if thought.anonymous %}
-                    <strong>By: Anonymous</strong>
-                    {% else %}
-                    <strong>By: <a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
-                    {% endif %}</h6>
+                    <!-- Author (By: User at Time) -->
+                    <span>
+                        {% if thought.anonymous %}
+                        By: <strong>Anonymous </strong>
+                        {% else %}
+                        By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}} </a></strong>
+                        {% endif %}
+                        {% if thought.time%}
+                            at <strong>{{thought.time}}</strong>
+                        {% endif %}
+                    </span>
+                </h6>
                 <hr>
-                <p class="card-text">{{thought.content | linebreaks}} </p>
+                <!-- Content -->
+                <div class="content-container">
+                    <p class="card-text">{{thought.content | linebreaks}} </p>
+                </div>
+                <!-- Tags -->
                 <div class="tag-container">
                     {% for tag in thought.tags.all %}
                     <a href="/search/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
                     {% endfor %}
                 </div>
-                
                 <hr>
                 <!-- Displays amount of likes and comments -->
                 <div class="container-fluid">
@@ -65,8 +76,7 @@
         </div>
         <br>
         {% empty %}
-        <p>No thoughts, head empty...<br>
-        Add new thought?</p>
+        <p>No thoughts, head empty...</p>
     {% endfor %}
     
     <!-- Pagination Code from CI "I Think Therefore I blog" Codealong project -->

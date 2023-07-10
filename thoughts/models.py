@@ -44,7 +44,7 @@ class Thought(models.Model):
         related_name='thoughts'
         )
     content = models.TextField(max_length=400, null=False, blank=False)
-    time = models.TimeField(default=timezone.now)
+    time = models.TimeField(default=timezone.now, null=True, blank=True)
     anonymous = models.BooleanField(null=False, blank=False, default=True)
     # auto_now_add applies only on creation while auto_now applies on update
     date_created = models.DateTimeField(auto_now_add=True)
