@@ -1,10 +1,9 @@
-from django_select2 import forms as s2forms
+from django import forms
+from .models import Tag
 
 
 # Used in thought forms for adding tags
-class TagWidget(s2forms.ModelSelect2MultipleWidget):
-    search_fields = [
-        "name__icontains"
-    ]
-    attrs = {'class': 'tag-widget'}
-    allow_multiple_selected = True
+class TagWidget(forms.SelectMultiple):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.choices = Tag.objects.all().values_list('id', 'name')

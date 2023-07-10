@@ -21,6 +21,7 @@
 /* Tags, half-height buttons */
 .tag-container .btn{
     --bs-btn-line-height: 1;
+    margin: 2px;
 }
 
 /* Overrides select2 default style for tag colors */
