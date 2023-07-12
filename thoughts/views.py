@@ -14,6 +14,18 @@ class ThoughtList(generic.ListView):
     paginate_by = 8
 
     def add_thought(request):
+        """
+        Creates a new thought using the contents of ThoughtForm
+        with the logged in user as the author
+        """
+        if not user_is_logged_in(request.user):
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Please sign in to post thoughts.'
+                )
+            return redirect('account_login')
+
         if request.method == 'POST':
             form = ThoughtForm(request.POST)
             if form.is_valid():
@@ -31,7 +43,21 @@ class ThoughtList(generic.ListView):
         return render(request, 'thoughts/add_thought.html', context)
 
     def edit_thought(request, thought_id):
+        """
+        Edits an existing thought with the specified id
+        using the form ThoughtForm
+        """
         thought = get_object_or_404(Thought, id=thought_id)
+
+        # Ensures only the owner/superuser may edit
+        if not user_is_owner_or_superuser(request.user, thought.author):
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Only the owner may edit this post.'
+                )
+            return redirect('home')
+
         if request.method == 'POST':
             form = ThoughtForm(request.POST, instance=thought)
             if form.is_valid():
@@ -44,7 +70,20 @@ class ThoughtList(generic.ListView):
         return render(request, 'thoughts/edit_thought.html', context)
 
     def delete_thought(request, thought_id):
+        """
+        Deletes thought with the specified id
+        """
         thought = get_object_or_404(Thought, id=thought_id)
+
+        # Ensures only the owner/superuser may delete
+        if not user_is_owner_or_superuser(request.user, thought.author):
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Only the owner may delete this post.'
+                )
+            return redirect('home')
+
         thought.delete()
         return redirect('home')
 
@@ -56,7 +95,7 @@ class ThoughtList(generic.ListView):
         thought = get_object_or_404(Thought, id=thought_id)
         user = request.user
         # If not logged in, redirects to login page
-        if not user.is_authenticated or user.is_anonymous:
+        if not user_is_logged_in(user):
             messages.add_message(
                 request,
                 messages.ERROR,
@@ -81,7 +120,9 @@ class ThoughtList(generic.ListView):
 
 
 class ThoughtDetail(View):
-
+    """
+    Displays a single thought and related comments
+    """
     def get(self, request, *args, **kwargs):
         thought_id = kwargs.get('thought_id')
         queryset = Thought.objects
@@ -99,9 +140,12 @@ class ThoughtDetail(View):
         return render(request, "thoughts/thought_detail.html", context)
 
     def post(self, request, *args, **kwargs):
-        # Safeguard for if user manages to write a
-        # comment without being logged in, redirects to login page
-        if not request.user.is_authenticated or request.user.is_anonymous:
+        """
+        Posts a comment on the thought with
+        the logged in user as the comment author
+        """
+        # Ensures user is logged in, redirects to login
+        if not user_is_logged_in(request.user):
             messages.add_message(
                 request,
                 messages.ERROR,
@@ -125,7 +169,7 @@ class ThoughtDetail(View):
             comment.author = request.user
             comment.save()
             messages.add_message(
-                request, messages.INFO,
+                request, messages.SUCCESS,
                 'Successfully left a comment.'
                 )
         else:
@@ -150,8 +194,8 @@ class ThoughtDetail(View):
         """
         comment = get_object_or_404(Comment, id=comment_id)
         user = request.user
-        # If not logged in, redirects to login page
-        if not user.is_authenticated or user.is_anonymous:
+        # Ensures user is logged in, else redirects to login page
+        if not user_is_owner_or_superuser(user, comment.author):
             messages.add_message(
                 request,
                 messages.ERROR,
@@ -166,12 +210,33 @@ class ThoughtDetail(View):
         return redirect(f'../view/{comment.thought.pk}')
 
     def delete_comment(request, comment_id):
+        """
+        Deletes comment with specified id
+        """
         comment = get_object_or_404(Comment, id=comment_id)
-        comment.delete()
+
+        # Ensures only the owner/superuser may delete
+        if not user_is_owner_or_superuser(request.user, comment.author):
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Only the owner may delete this comment.'
+                )
+        else:
+            comment.delete()
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Comment successfully deleted.'
+                )
         return redirect(f'../view/{comment.thought.pk}')
 
 
 class UserDetail(User):
+    """
+    Display a user profile containing the amount of
+    posts and likes given/received of a specified user
+    """
     def view_user(request, user_id):
         user = get_object_or_404(User, id=user_id)
 
@@ -195,3 +260,19 @@ class UserDetail(User):
             'likes_received': likes_received
         }
         return render(request, 'users/view_user.html', context)
+
+
+def user_is_logged_in(user):
+    """
+    Used to check if specified user is
+    authenticated and not anonymousUser
+    """
+    return user.is_authenticated and not user.is_anonymous
+
+
+def user_is_owner_or_superuser(user, object_owner):
+    """
+    Used to check if user is the owner
+    of an object or is a superuser
+    """
+    return user is object_owner or user.is_superuser
