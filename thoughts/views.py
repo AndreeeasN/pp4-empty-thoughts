@@ -35,6 +35,11 @@ class ThoughtList(generic.ListView):
                 thought.save()
                 # Saves tags (many-to-many relationship)
                 form.save_m2m()
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Thought successfully posted!'
+                    )
                 return redirect('home')
         form = ThoughtForm()
         context = {
@@ -62,6 +67,11 @@ class ThoughtList(generic.ListView):
             form = ThoughtForm(request.POST, instance=thought)
             if form.is_valid():
                 form.save()
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Thought successfully edited.'
+                    )
                 return redirect('home')
         form = ThoughtForm(instance=thought)
         context = {
@@ -82,9 +92,13 @@ class ThoughtList(generic.ListView):
                 messages.ERROR,
                 'Only the owner may delete this post.'
                 )
-            return redirect('home')
-
-        thought.delete()
+        else:
+            thought.delete()
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Post successfully deleted.'
+                )
         return redirect('home')
 
     def like_toggle_thought(request, thought_id):
