@@ -24,6 +24,11 @@
     margin: 2px;
 }
 
+/* Used on failed log-in attempts */
+.errorlist, .nonfield{
+    list-style: none;
+}
+
 /* Overrides select2 default style for tag colors */
 /* .select2-selection__choice {
     color: black;

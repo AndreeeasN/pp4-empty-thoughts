@@ -19,7 +19,8 @@ class Tag(models.Model):
     @admin.display
     def colored_name(self):
         return format_html(
-            '<span class="btn" style="color: {}; background-color: {}">{}</span>',
+            '<span class="btn" style="color: {}; ' +
+            'background-color: {}">{}</span>',
             self.text_color,
             self.bg_color,
             self.name,
@@ -37,7 +38,7 @@ class Thought(models.Model):
     Database model for user-submitted thoughts
     """
     title = models.CharField(
-        max_length=96, null=False, blank=False, default="Untitled Thought")
+        max_length=96, null=False, blank=False)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
