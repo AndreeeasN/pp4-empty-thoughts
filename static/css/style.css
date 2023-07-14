@@ -19,8 +19,17 @@
 }
 
 /* Select2 is not responsive, ensure it resizes */
-.select2 {
+.select2{
     width: 100% !important;
+}
+
+/* Page selection wraps on smaller devices */
+.pagination{
+    flex-wrap: wrap;
+}
+
+.card{
+    background-color: rgb(250, 250, 250);
 }
 
 /* .select2-search { background-color: #00f; }

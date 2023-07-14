@@ -26,7 +26,7 @@
 
         <div class="tag-container">
             {% for tag in thought.tags.all %}
-            <a href="/search/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
+            <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
             {% endfor %}
         </div>
         <hr>

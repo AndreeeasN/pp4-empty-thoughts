@@ -100,6 +100,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'thoughts.context_processors.search_form',
             ],
+            'libraries':{
+                'pagination_tags': 'thoughts.templatetags.pagination_tags',
+            }
         },
     },
 ]
