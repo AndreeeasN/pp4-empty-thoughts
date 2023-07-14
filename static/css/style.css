@@ -2,17 +2,6 @@
     color: red;
 }
 
-.card {
-    margin: 0 auto;
-    float: none;
-    margin-top: 10px;
-    width: 32rem;
-}
-
-.col {
-    align-self: center;
-}
-
 .thought-title, .thought-content {
     max-width: 100%;
     overflow-wrap: break-word;
@@ -24,10 +13,20 @@
     margin: 2px;
 }
 
-/* Used on failed log-in attempts */
+/* Text shows up on failed log-in attempts */
 .errorlist, .nonfield{
     list-style: none;
 }
+
+/* Select2 is not responsive, ensure it resizes */
+.select2 {
+    width: 100% !important;
+}
+
+/* .select2-search { background-color: #00f; }
+.select2-search input { background-color: #00f; }
+.select2-selection--multiple { background-color: #00f !important; }
+.select2-results { background-color: #00f; } */
 
 /* Overrides select2 default style for tag colors */
 /* .select2-selection__choice {

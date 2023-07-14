@@ -13,6 +13,27 @@ class ThoughtList(generic.ListView):
     template_name = 'thoughts/view_thoughts.html'
     paginate_by = 8
 
+    def get_queryset(self):
+        """
+        Filters the default queryset using filters.ThoughtFilter
+        """
+        queryset = super().get_queryset()
+        thought_filter = ThoughtFilter(self.request.GET, queryset=queryset)
+        return thought_filter.qs
+
+    def get_context_data(self, **kwargs):
+        """
+        Sets context to include thoughtFilter,
+        allows us to include our form in the template
+        """
+        context = super().get_context_data(**kwargs)
+        thought_filter = ThoughtFilter(
+            self.request.GET,
+            queryset=self.get_queryset()
+            )
+        context['filter'] = thought_filter
+        return context
+
     def add_thought(request):
         """
         Creates a new thought using the contents of ThoughtForm
@@ -122,15 +143,6 @@ class ThoughtList(generic.ListView):
         else:
             thought.likes.add(user)
         return redirect('home')
-
-    def search(request):
-        thought_list = Thought.objects.all()
-        thought_filter = ThoughtFilter(request.GET, queryset=thought_list)
-        return render(
-            request,
-            'thoughts/search_thoughts.html',
-            {"filter": thought_filter}
-            )
 
 
 class ThoughtDetail(View):

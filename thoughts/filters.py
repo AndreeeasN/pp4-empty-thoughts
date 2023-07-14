@@ -28,19 +28,19 @@ class ThoughtFilter(django_filters.FilterSet):
     )
 
     # Combines title/content query to ease search
-    def filter_search_text(self, queryset, name, value):
+    def filter_search_text(self, queryset, _name, value):
         return queryset.filter(
             Q(title__icontains=value) |
             Q(content__icontains=value)
             )
 
-    def filter_author(self, queryset, name, value):
+    def filter_author(self, queryset, _name, value):
         # Excludes anonymous posts if searching by author
         if value:
             queryset = queryset.exclude(anonymous=True)
         return queryset.filter(author__username__icontains=value)
 
-    def filter_tags(self, queryset, name, value):
+    def filter_tags(self, queryset, _name, value):
         # Only filter by tags if tags have been entered
         if value:
             for tag in value:

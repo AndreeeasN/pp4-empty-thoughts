@@ -4,20 +4,24 @@
 
 {% load static %}
 
-<div class="card center">
-    <div class="card-body">
-        <h2 class="card-title text-center">{{user_detail.get_username}} 
-            <a class="btn btn-outline-link" href="/search/?author={{user_detail.get_username}}" aria-label="Search for posts by User" title="Search for posts by {{user_detail.get_username}}">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </a>
-        </h2>
-        <hr>
-        <p class="card-text">
-        <strong>Member since: </strong> <span>{{user_detail.date_joined.date}}</span> <br>
-        <strong>Thoughts submitted: </strong> <span>{{user_detail.thoughts.count}}</span> <br>
-        <strong>Comments submitted: </strong> <span>{{user_detail.comment_author.count}}</span> <br>
-        <strong>Likes given: </strong> <span>{{ likes_given }}</span> <br>
-        <strong>Likes received: </strong> <span>{{ likes_received }}</span> <br></p>
+<div class="row">
+    <div class="col-8 offset-2">
+        <div class="card center">
+            <div class="card-body">
+                <h2 class="card-title text-center">{{user_detail.get_username}} 
+                    <a class="btn btn-outline-link" href="/?author={{user_detail.get_username}}" aria-label="Search for posts by User" title="Search for posts by {{user_detail.get_username}}">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </h2>
+                <hr>
+                <p class="card-text">
+                <strong>Member since: </strong> <span>{{user_detail.date_joined.date}}</span> <br>
+                <strong>Thoughts submitted: </strong> <span>{{user_detail.thoughts.count}}</span> <br>
+                <strong>Comments submitted: </strong> <span>{{user_detail.comment_author.count}}</span> <br>
+                <strong>Likes given: </strong> <span>{{ likes_given }}</span> <br>
+                <strong>Likes received: </strong> <span>{{ likes_received }}</span> <br></p>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -27,5 +27,4 @@ urlpatterns = [
         views.ThoughtDetail.delete_comment,
         name='delete_comment'
         ),
-    path('search/', views.ThoughtList.search, name='search'),
 ]

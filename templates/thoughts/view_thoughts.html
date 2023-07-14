@@ -3,84 +3,92 @@
 {% block content %}
 
 {% load static %}
+
 <div class="container text-center">
-    <h1>Here are some thoughts:</h1>
-    {% if user.is_authenticated %}
-    <a href="/add">
-        <button type="button" class="btn btn-primary btn-lg">Create new thought?</button>
-    </a>
-    {% else %}
-    <br>
-    {% endif %}
-    <!-- Displays all thoughts, hides author if anonymous -->
-    {% for thought in thought_list %}
-        <div class="card center">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <!-- Title -->
-                    <a href="/view/{{thought.id}}">
-                    {{thought.title}}
-                    </a>
-                </h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">
-                    <!-- Author (By: User at Time) -->
-                    <span>
-                        {% if thought.anonymous %}
-                        By: <strong>Anonymous </strong>
-                        {% else %}
-                        By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}} </a></strong>
-                        {% endif %}
-                        {% if thought.time%}
-                            at <strong>{{thought.time}}</strong>
-                        {% endif %}
-                    </span>
-                </h6>
-                <hr>
-                <!-- Content -->
-                <div class="content-container">
-                    <p class="card-text">{{thought.content | linebreaks}} </p>
-                </div>
-                <!-- Tags -->
-                <div class="tag-container">
-                    {% for tag in thought.tags.all %}
-                    <a href="/search/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
-                    {% endfor %}
-                </div>
-                <hr>
-                <!-- Displays amount of likes and comments -->
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <span class="">
-                                <a href="/like/{{thought.id}}">
-                            {% if request.user in thought.likes.all %}
-                            <i class="fa-solid fa-heart"></i>
-                            {% else %}
-                            <i class="fa-regular fa-heart"></i>
-                            {% endif %}
-                            {{ thought.number_of_likes }} </a>| 
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>Here are some thoughts:</h1>
+    
+            {% if user.is_authenticated %}
+            <a href="/add">
+                <button type="button" class="btn btn-primary btn-lg">Create new thought?</button>
+            </a>
+            {% else %}
+            <br>
+            {% endif %}
+            <!-- Displays all thoughts, hides author if anonymous -->
+            {% for thought in thought_list %}
+                <div class="card center">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <!-- Title -->
                             <a href="/view/{{thought.id}}">
-                                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                            {{thought.title}}
                             </a>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                            <!-- Author (By: User at Time) -->
+                            <span>
+                                {% if thought.anonymous %}
+                                By: <strong>Anonymous </strong>
+                                {% else %}
+                                By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}} </a></strong>
+                                {% endif %}
+                                {% if thought.time%}
+                                    at <strong>{{thought.time}}</strong>
+                                {% endif %}
                             </span>
+                        </h6>
+                        <hr>
+                        <!-- Content -->
+                        <div class="content-container">
+                            <p class="card-text">{{thought.content | linebreaks}} </p>
                         </div>
-                        <div class="col">
-                            {% if request.user == thought.author or request.user.is_superuser %}
-                            <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-                            <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
-                            {% endif %}
+                        <!-- Tags -->
+                        <div class="tag-container">
+                            {% for tag in thought.tags.all %}
+                            <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <!-- Displays amount of likes and comments -->
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col">
+                                    <span class="">
+                                        <a href="/like/{{thought.id}}">
+                                    {% if request.user in thought.likes.all %}
+                                    <i class="fa-solid fa-heart"></i>
+                                    {% else %}
+                                    <i class="fa-regular fa-heart"></i>
+                                    {% endif %}
+                                    {{ thought.number_of_likes }} </a>| 
+                                    <a href="/view/{{thought.id}}">
+                                        <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                                    </a>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    {% if request.user == thought.author or request.user.is_superuser %}
+                                    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+                                    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <br>
+                {% empty %}
+                <p>No thoughts, head empty...</p>
+            {% endfor %}
         </div>
-        <br>
-        {% empty %}
-        <p>No thoughts, head empty...</p>
-    {% endfor %}
+      </div>
     
     <!-- Pagination Code from CI "I Think Therefore I blog" Codealong project -->
     {% if is_paginated %}
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
@@ -92,6 +100,10 @@
         </ul>
     </nav>
     {% endif %}
-    
 </div>
+{{ form.media.js }}
+<!-- Select2 scripts, used for tags -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/enableTagwidget.js' %}"></script>
+
 {%endblock%}
