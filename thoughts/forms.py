@@ -10,7 +10,7 @@ class ThoughtForm(forms.ModelForm):
     """
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=TagWidget,
+        widget=TagWidget(attrs={'id': 'form-tag-widget'}),
         required=False
         )
 

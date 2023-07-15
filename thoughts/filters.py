@@ -22,9 +22,9 @@ class ThoughtFilter(django_filters.FilterSet):
     # Tags use our custom select2 TagWidget
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
-        widget=TagWidget,
+        widget=TagWidget(attrs={'id': 'search-tag-widget'}),
         method='filter_tags',
-        label='Tags:'
+        label='Tags:',
     )
 
     # Combines title/content query to ease search

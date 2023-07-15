@@ -5,12 +5,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-<!-- Required for django-select2 -->
-{{ form.media.css }}
-<!-- Jquery used with select2 widgets -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
 <div class="row mt-4 mx-0">
     <div class="col-10 offset-1 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
         <h1 class="text-center">Add new thought:</h1>
@@ -26,11 +20,9 @@
             </div>
         </form>
     </div>
-    {{ form.media.js }}
 </div>
 
-<!-- Select2 scripts, used for tags -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="{% static 'js/enableTagwidget.js' %}"></script>
+<!-- Scripts to enable Select2 widget for tags -->
+<script src="{% static 'js/enableFormTagwidget.js' %}"></script>
 
 {%endblock%}
