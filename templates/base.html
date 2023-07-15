@@ -70,9 +70,10 @@
   </nav>      
 </header>
 
+<!-- Message box -->
 <div class="container">
   <div class="row">
-    <div class="col-md-6 offset-md-3 sticky-top">
+    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 mt-4">
       {% for message in messages %}
       <div class="alert {{ message.tags }} alert-dismissible fade show" id="msg" role="alert">
         {{ message | safe }}
@@ -91,8 +92,8 @@
   </main>
 
     <!-- Offcanvas search form -->
-  <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-    <div class="offcanvas-header">
+  <div class="offcanvas offcanvas-start text-center" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header" data-bs-theme="dark">
       <h5 class="offcanvas-title">Search <i class="fa-solid fa-magnifying-glass"></i></h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
@@ -112,6 +113,27 @@
 
   </div>
 </body>
+
+<!-- footer -->
+<footer id="footer" class="bg-dark py-3" data-bs-theme="dark">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <p class="text-body-secondary mb-0">This website was created as a portfolio project and is entirely for educational purposes.</p>
+      </div>
+      <div class="col-md-6">
+        <ul class="list-inline text-end mb-0">
+          <li class="list-inline-item">
+            <a class="fs-3 link-body-emphasis" href="https://github.com/AndreeeasN" target="_blank" aria-label="Link to Andreas Norberg Bergström's GitHub page (Opens in a new tab)"><i class="fa-brands fa-square-github"></i></a>
+          </li>
+          <li class="list-inline-item">
+            <a class="fs-3 link-body-emphasis" href="https://www.linkedin.com/in/andreas-norberg-bergstr%C3%B6m-69a79426a/" target="_blank" aria-label="Link to Andreas Norberg Bergström's LinkedIn page (Opens in a new tab)"><i class="fa-brands fa-linkedin"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
 
 {{ form.media.js }}
 

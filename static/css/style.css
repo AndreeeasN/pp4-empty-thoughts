@@ -1,10 +1,33 @@
-#button-logout {
+html{
+    height: 100%;
+}
+
+body{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#footer{
+    margin-top: auto;
+}
+
+#button-logout{
     color: red;
 }
 
-.thought-title, .thought-content {
+.thought-title, .thought-content{
     max-width: 100%;
     overflow-wrap: break-word;
+}
+
+.offcanvas-header{
+    color: white;
+    background-color: #2b3035;
+}
+
+.offcanvas, .offcanvas-body{
+    background-color: rgba(100, 100, 100, 0.5);
 }
 
 /* Tags, half-height buttons */
@@ -26,10 +49,6 @@
 /* Page selection wraps on smaller devices */
 .pagination{
     flex-wrap: wrap;
-}
-
-.card{
-    background-color: rgb(250, 250, 250);
 }
 
 /* .select2-search { background-color: #00f; }

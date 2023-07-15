@@ -22,9 +22,18 @@ class ThoughtForm(forms.ModelForm):
     class Meta:
         model = Thought
         fields = ['title', 'content', 'time', 'anonymous', 'tags']
+        widgets = {
+            # Reduces size of text area
+            'content': forms.Textarea(attrs={'rows': 4}),
+            }
+
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content', 'anonymous']
+        widgets = {
+            # Reduces size of text area
+            'content': forms.Textarea(attrs={'rows': 3}),
+        }

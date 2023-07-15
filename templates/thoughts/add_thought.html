@@ -11,19 +11,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-<div class="container">
-    <h1>Add new thought:</h1>
+<div class="row mt-4 mx-0">
+    <div class="col-10 offset-1 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+        <h1 class="text-center">Add new thought:</h1>
 
-    <!-- Form to create new thought -->
-    <form method="post" action="add">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div>
-            <p>
-                <input type="submit" value="Submit Thought">
-            </p>
-        </div>
-    </form>
+        <!-- Form to create new thought -->
+        <form method="post" action="add">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <div>
+                <p>
+                    <input type="submit" value="Submit Thought">
+                </p>
+            </div>
+        </form>
+    </div>
     {{ form.media.js }}
 </div>
 

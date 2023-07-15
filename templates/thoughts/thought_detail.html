@@ -5,101 +5,103 @@
 {% load static %}
 
 {% load crispy_forms_tags %}
-<div class="container">
-    <div class="container text-center">
-        <!-- Detailed view of specific thought -->
-        <h1 class="thought-title">{{thought.title}}</h1>
-        <span>
-            <h3>
-            {% if thought.anonymous %}
-            By: <strong>Anonymous</strong>
-            {% else %}
-            By: <strong><a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
-            {% endif %}
-            {% if thought.time%}
-                at <strong>{{thought.time}}</strong>
-            {% endif %}
-            </h3>
-        </span>
-        <hr>
-        <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
-
-        <div class="tag-container">
-            {% for tag in thought.tags.all %}
-            <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
-            {% endfor %}
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col">
-                <span class="">
-                {% if request.user in thought.likes.all %}
-                <i class="fa-solid fa-heart"></i>
+<div class="row mt-4 mx-0">
+    <div class="col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+        <div class="text-center">
+            <!-- Detailed view of specific thought -->
+            <h1 class="thought-title">{{thought.title}}</h1>
+            <span>
+                <h3>
+                {% if thought.anonymous %}
+                By: <strong>Anonymous</strong>
                 {% else %}
-                <i class="fa-regular fa-heart"></i>
+                By: <strong><a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
                 {% endif %}
-                {{ thought.number_of_likes }} | 
-                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
-                </span>
-            </div>
-            <div class="col">
-                {% if request.user == thought.author or request.user.is_superuser %}
-                <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-                <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                {% if thought.time%}
+                    at <strong>{{thought.time}}</strong>
                 {% endif %}
-            </div>
-        </div>
-    </div>
-    
-    <!-- Comment form -->
-    {% if user.is_authenticated %}
-    <h3>Leave a comment:</h3>
-    <p>Posting as: {{ user.username }}</p>
-    <form method="post">
-        {% csrf_token %}
-        {{ comment_form | crispy }}
-        <button type="submit" class="btn btn-outline-secondary">Post Comment</button>
-    </form>
-    {% endif %}
+                </h3>
+            </span>
+            <hr>
+            <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
 
-    <!-- Displays all comments -->
-    {% for comment in comments %}
-        <div class="card center">
-            <div class="card-body">
-                {% if comment.anonymous %}
-                    <h5>Anonymous</h5>
-                {% else %}
-                    <h5 class="card-subtitle mb-2 text-body-secondary">
-                        <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
-                    </h5>
+            <div class="tag-container">
+                {% for tag in thought.tags.all %}
+                <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <span class="">
+                    {% if request.user in thought.likes.all %}
+                    <i class="fa-solid fa-heart"></i>
+                    {% else %}
+                    <i class="fa-regular fa-heart"></i>
                     {% endif %}
-                    <h6>{{comment.date_created}}</h6>
-                <p class="card-text">{{comment.content}} </p>
-                <hr>
-                <div class="row">
-                    <div class="col">
-                        <span class="">
-                        <a href="/like_comment/{{comment.id}}">
-                        {% if request.user in comment.likes.all %}
-                        <i class="fa-solid fa-heart"></i>
-                        {% else %}
-                        <i class="fa-regular fa-heart"></i>
-                        {% endif %}
-                        {{ comment.number_of_likes }} 
-                        </a>
-                        </span>
-                    </div>
-                    <div class="col">
-                        {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
-                        <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger">Delete</a>
-                        {% endif %}
-                    </div>
+                    {{ thought.number_of_likes }} | 
+                    <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                    </span>
+                </div>
+                <div class="col">
+                    {% if request.user == thought.author or request.user.is_superuser %}
+                    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
+                    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        {% empty %}
-        <br>
-        <p>No comments yet.</p>
-    {% endfor %}
+    
+        <!-- Comment form -->
+        {% if user.is_authenticated %}
+        <h3>Leave a comment:</h3>
+        <p>Posting as: {{ user.username }}</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form | crispy }}
+            <button type="submit" class="btn btn-outline-secondary">Post Comment</button>
+        </form>
+        {% endif %}
+        
+        <!-- Displays all comments -->
+        {% for comment in comments %}
+            <div class="card center my-4 col-md-10 offset-md-1">
+                <div class="card-body">
+                    {% if comment.anonymous %}
+                        <h5 class="card-subtitle mb-2 text-body-secondary">Anonymous</h5>
+                    {% else %}
+                        <h5 class="card-subtitle mb-2 text-body-secondary">
+                            <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
+                        </h5>
+                        {% endif %}
+                        <h6>{{comment.date_created}}</h6>
+                    <p class="card-text">{{comment.content}} </p>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <span class="">
+                            <a href="/like_comment/{{comment.id}}">
+                            {% if request.user in comment.likes.all %}
+                            <i class="fa-solid fa-heart"></i>
+                            {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                            {% endif %}
+                            {{ comment.number_of_likes }} 
+                            </a>
+                            </span>
+                        </div>
+                        <div class="col">
+                            {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
+                            <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <br>
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
 </div>
 {%endblock%}
