@@ -5,132 +5,186 @@
 {% load static %}
 {% load pagination_tags %}
 
-<div class="container text-center">
-    <div class="row mt-4 mx-0">
-        <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-            <h1>Here are some thoughts:</h1>
-    
-            {% if user.is_authenticated %}
-            <a href="/add">
-                <button type="button" class="btn btn-primary btn-lg">Create new thought?</button>
-            </a>
-            {% else %}
-            <br>
+<div class="text-center py-2">
+    <div class="row mx-0">
+        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 offset-sm-0 my-4">
+            <!-- Introductory blurb, first page only-->
+            {% if page_obj.number == 1 %}
+                <!-- User logged in -->
+                {% if user.is_authenticated %}
+                    <h1>Hello {{user.username}}!</h1>
+                    <p class="lead py-2">
+                        Have any thoughts to share? We're all ears!
+                    </p>
+                    <!-- 'Add new thought' button -->
+                    <a href="/add">
+                        <button type="button" class="btn btn-primary btn-lg">Share a new thought</button>
+                    </a>
+                <!-- Not logged in -->
+                {% else %}
+                    <div class="mb-4">
+                        <h1>Welcome!</h1>
+                        <p class="lead">
+                            Have thoughts you rarely get a chance to share?<br>
+                            This is the place to share them.
+                        </p>
+                        <p class="mb-4">
+                            Join the community to post, comment, and leave likes on posts.
+                        </p>
+                        <div>
+                            <a href="{% url 'account_login' %}" class="btn btn-primary me-2">Log in</a>
+                            <span class="text-muted">or</span>
+                            <a href="{% url 'account_signup' %}" class="btn btn-secondary ms-2">Sign up</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <hr class="mt-4">
             {% endif %}
-            <!-- Displays all thoughts, hides author if anonymous -->
-            {% for thought in thought_list %}
-                <div class="card center mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <!-- Title -->
-                            <a href="/view/{{thought.id}}">
-                            {{thought.title}}
-                            </a>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">
-                            <!-- Author (By: User at Time) -->
-                            <span>
-                                {% if thought.anonymous %}
+        </div>
+        <!-- Text above thoughts/search results -->
+        {% if request.GET.search_text or request.GET.author or request.GET.tags %}
+            <!-- First page, search results -->
+            {% if page_obj.number == 1 %}   
+                {% if filter.qs.count > 0 %} 
+                <h3>Found {{filter.qs.count}} search results!</h3>
+                {% endif %}
+            {% else %}
+            <!-- Subsequent search pages -->
+            <h3>Viewing search result page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+            {% endif %}
+        {% else %}
+            <!-- First page, non-search -->
+            {% if page_obj.number == 1 %} 
+            <h3>Here are the most recent thoughts:</h3>
+            {% else %}
+            <!-- Subsequent non-search pages -->
+            <h3>Viewing page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mx-0 text-center">
+    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
+        <!-- Displays all thoughts, hides author if anonymous -->
+        {% for thought in thought_list %}
+            <div class="card center mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <!-- Title -->
+                        <a href="/view/{{thought.id}}">
+                        {{thought.title}}
+                        </a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                        <!-- Author (By: [User] [(You)?] at [Time]) -->
+                        <span>
+                            {% if thought.anonymous %}
                                 By: <strong>Anonymous </strong>
-                                {% else %}
+                            {% else %}
                                 By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}} </a></strong>
+                            {% endif %}
+                            {% if request.user == thought.author %}
+                                (You)
+                            {% endif %}
+                            {% if thought.time%}
+                                at <strong>{{thought.time}}</strong>
+                            {% endif %}
+                        </span>
+                    </h6>
+                    <hr>
+                    <!-- Content -->
+                    <div class="content-container">
+                        <p class="card-text">{{thought.content | linebreaks}} </p>
+                    </div>
+                    <!-- Tags -->
+                    <div class="tag-container">
+                        {% for tag in thought.tags.all %}
+                        <a href="/?tags={{tag.pk}}" aria-label="Search by tag '{{tag.name}}'">{{ tag.colored_name }}</a>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <!-- Displays amount of likes and comments -->
+                    <div class="container-fluid">
+                        <div class="row py-0 my-0">
+                            <div class="col-sm-4 py-2">
+                                <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0" aria-label="Like thought">
+                                {% if request.user in thought.likes.all %}
+                                <i class="fa-solid fa-heart"></i>
+                                {% else %}
+                                <i class="fa-regular fa-heart"></i>
                                 {% endif %}
-                                {% if thought.time%}
-                                    at <strong>{{thought.time}}</strong>
+                                {{ thought.number_of_likes }} </a>| 
+                                <a href="/view/{{thought.id}}" class="link-underline link-underline-opacity-0" aria-label="View comment">
+                                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                                </a>
+                            </div>
+                            <!-- Edit/Delete buttons -->
+                            <div class="col-sm-6 offset-sm-2">
+                                {% if request.user == thought.author or request.user.is_superuser %}
+                                <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary" aria-label="Edit thought">
+                                    <i class="fa-regular fa-pen-to-square"></i> Edit
+                                </a>
+                                <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">
+                                    <i class="fa-regular fa-trash-can"></i> Delete
+                                </a>
                                 {% endif %}
-                            </span>
-                        </h6>
-                        <hr>
-                        <!-- Content -->
-                        <div class="content-container">
-                            <p class="card-text">{{thought.content | linebreaks}} </p>
-                        </div>
-                        <!-- Tags -->
-                        <div class="tag-container">
-                            {% for tag in thought.tags.all %}
-                            <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
-                            {% endfor %}
-                        </div>
-                        <hr>
-                        <!-- Displays amount of likes and comments -->
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col">
-                                    <span class="">
-                                        <a href="/like/{{thought.id}}">
-                                    {% if request.user in thought.likes.all %}
-                                    <i class="fa-solid fa-heart"></i>
-                                    {% else %}
-                                    <i class="fa-regular fa-heart"></i>
-                                    {% endif %}
-                                    {{ thought.number_of_likes }} </a>| 
-                                    <a href="/view/{{thought.id}}">
-                                        <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
-                                    </a>
-                                    </span>
-                                </div>
-                                <div class="col">
-                                    {% if request.user == thought.author or request.user.is_superuser %}
-                                    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-                                    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
-                                    {% endif %}
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br>
-                {% empty %}
-                <br>
-                <p>No thoughts, head empty...</p>
-            {% endfor %}
-        </div>
-      </div>
-    <!-- Pagination heavily inspired by https://stackoverflow.com/a/46329564 by Rob L -->
-    <span>Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
-    {% if is_paginated %}
-    <div class="row my-2 mb-4">
-        <div class="col-lg-12">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <!-- 'First' and 'Previous' button -->
-                    {% if page_obj.has_previous %}
-                    <li><a href="?{% url_replace request 'page' 1 %}"
-                        class="page-link">&laquo; First</a></li>
-                    <li><a href="?{% url_replace request 'page' page_obj.previous_page_number %}"
-                        class="page-link">&lsaquo; Prev</a></li>
-                    {% endif %}
-
-                    <!-- If 3 pages away from start, create left ellipsis  -->
-                    {% if page_obj.number|add:'-2' > 1 %}
-                    <li><a href="?{% url_replace request 'page' page_obj.number|add:'-3' %}"
-                        class="page-link">&hellip;</a></li>
-                    {% endif %}
-                
-                    <!-- Show available pages within range  -->
-                    {% for i in page_obj.paginator.page_range %}
-                        {% if page_obj.number == i %}
-                            <li class="active page-link"><span>{{ i }} <span class="sr-only">(current page)</span></span></li>
-                        {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
-                            <li><a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                
-                    <!-- If 3 pages away from end, create right ellipsis  -->
-                    {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
-                    <li><a class="page-link" href="?{% url_replace request 'page' page_obj.number|add:'3' %}">&hellip;</a></li>
-                    {% endif %}
-
-                    <!-- 'Next' and 'Last' button -->
-                    {% if page_obj.has_next %}
-                    <li><a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}" class="page-link">Next &rsaquo;</a></li>
-                    <li><a class="page-link" href="?{% url_replace request 'page' paginator.num_pages %}" class="page-link">Last &raquo;</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
+            </div>
+            <br>
+            {% empty %}
+            <br>
+            <h3>No thoughts found, head empty...</h3>
+        {% endfor %}
     </div>
-    {% endif %}
 </div>
+<!-- Pagination heavily inspired by https://stackoverflow.com/a/46329564 by Rob L -->
+{% if is_paginated %}
+<div class="row mb-4 mx-0">
+    <div class="col-lg-12">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- 'First' and 'Previous' button -->
+                {% if page_obj.has_previous %}
+                <li><a href="?{% url_replace request 'page' 1 %}"
+                    class="page-link">&laquo; First</a></li>
+                <li><a href="?{% url_replace request 'page' page_obj.previous_page_number %}"
+                    class="page-link">&lsaquo; Prev</a></li>
+                {% endif %}
+
+                <!-- If 3 pages away from start, create left ellipsis  -->
+                {% if page_obj.number|add:'-2' > 1 %}
+                <li><a href="?{% url_replace request 'page' page_obj.number|add:'-3' %}"
+                    class="page-link">&hellip;</a></li>
+                {% endif %}
+            
+                <!-- Show available pages within range  -->
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="active page-link"><span>{{ i }} <span class="sr-only">(current page)</span></span></li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li><a class="page-link" href="?{% url_replace request 'page' i %}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            
+                <!-- If 3 pages away from end, create right ellipsis  -->
+                {% if page_obj.paginator.num_pages > page_obj.number|add:'2' %}
+                <li><a class="page-link" href="?{% url_replace request 'page' page_obj.number|add:'3' %}">&hellip;</a></li>
+                {% endif %}
+
+                <!-- 'Next' and 'Last' button -->
+                {% if page_obj.has_next %}
+                <li><a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}" class="page-link">Next &rsaquo;</a></li>
+                <li><a class="page-link" href="?{% url_replace request 'page' paginator.num_pages %}" class="page-link">Last &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+
 
 {%endblock%}

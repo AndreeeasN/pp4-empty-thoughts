@@ -11,16 +11,19 @@
             <!-- Detailed view of specific thought -->
             <h1 class="thought-title">{{thought.title}}</h1>
             <span>
-                <h3>
+                <h4 class="lead">
                 {% if thought.anonymous %}
                 By: <strong>Anonymous</strong>
                 {% else %}
                 By: <strong><a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
                 {% endif %}
+                {% if request.user == thought.author %}
+                    (You)
+                {% endif %}
                 {% if thought.time%}
                     at <strong>{{thought.time}}</strong>
                 {% endif %}
-                </h3>
+                </h4>
             </span>
             <hr>
             <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
@@ -31,22 +34,26 @@
                 {% endfor %}
             </div>
             <hr>
-            <div class="row">
-                <div class="col">
-                    <span class="">
+            <div class="row py-0 my-0">
+                <div class="col-sm-4 py-2">
+                    <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0">
                     {% if request.user in thought.likes.all %}
                     <i class="fa-solid fa-heart"></i>
                     {% else %}
                     <i class="fa-regular fa-heart"></i>
                     {% endif %}
-                    {{ thought.number_of_likes }} | 
+                    {{ thought.number_of_likes }} </a>| 
                     <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
-                    </span>
                 </div>
-                <div class="col">
+                <!-- Edit/Delete buttons -->
+                <div class="col-sm-6 offset-sm-2 p">
                     {% if request.user == thought.author or request.user.is_superuser %}
-                    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary">Edit</a>
-                    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">Delete</a>
+                    <a href="/edit/{{thought.id}}" class="btn btn-outline-secondary" aria-label="Edit thought">
+                        <i class="fa-regular fa-pen-to-square"></i> Edit
+                    </a>
+                    <a href="/delete/{{thought.id}}" class="btn btn-outline-danger">
+                        <i class="fa-regular fa-trash-can"></i> Delete
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -67,20 +74,26 @@
         {% for comment in comments %}
             <div class="card center my-4 col-md-10 offset-md-1">
                 <div class="card-body">
-                    {% if comment.anonymous %}
-                        <h5 class="card-subtitle mb-2 text-body-secondary">Anonymous</h5>
-                    {% else %}
-                        <h5 class="card-subtitle mb-2 text-body-secondary">
-                            <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
-                        </h5>
+                    <span>
+                        {% if comment.anonymous %}
+                            <h5 class="card-subtitle mb-2 text-body-secondary">
+                                Anonymous 
+                                {% if request.user == comment.author %}
+                                (You)
+                                {% endif %}
+                            </h5>
+                        {% else %}
+                            <h5 class="card-subtitle mb-2 text-body-secondary">
+                                <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
+                            </h5>
                         {% endif %}
-                        <h6>{{comment.date_created}}</h6>
+                    </span>
+                    <h6>{{comment.date_created}}</h6>
                     <p class="card-text">{{comment.content}} </p>
                     <hr>
-                    <div class="row">
-                        <div class="col">
-                            <span class="">
-                            <a href="/like_comment/{{comment.id}}">
+                    <div class="row py-0 my-0 text-center">
+                        <div class="col-sm-2 offset-sm-1 py-2">
+                            <a href="/like_comment/{{comment.id}}" class="link-underline link-underline-opacity-0" aria-label="Like comment">
                             {% if request.user in comment.likes.all %}
                             <i class="fa-solid fa-heart"></i>
                             {% else %}
@@ -88,11 +101,12 @@
                             {% endif %}
                             {{ comment.number_of_likes }} 
                             </a>
-                            </span>
                         </div>
-                        <div class="col">
+                        <div class="col-sm-4 offset-sm-4">
                             {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
-                            <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger">Delete</a>
+                            <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger" aria-label="Delete comment">
+                                <i class="fa-regular fa-trash-can"></i> Delete
+                            </a>
                             {% endif %}
                         </div>
                     </div>
