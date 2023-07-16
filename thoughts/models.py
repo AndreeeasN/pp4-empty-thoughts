@@ -18,6 +18,10 @@ class Tag(models.Model):
     # Shows tag colors in admin menu
     @admin.display
     def colored_name(self):
+        """
+        Returns tag as formatted html, includes
+        text and background color
+        """
         return format_html(
             '<span class="btn" style="color: {}; ' +
             'background-color: {}">{}</span>',

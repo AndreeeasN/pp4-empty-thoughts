@@ -6,7 +6,7 @@ from thoughts.widgets import TagWidget, TimeWidget
 
 class ThoughtForm(forms.ModelForm):
     """
-    Form for submitting thoughts, uses crispyforms
+    Form for submitting thoughts, uses custom widgets
     """
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),

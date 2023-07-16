@@ -6,7 +6,7 @@
 
 {% load crispy_forms_tags %}
 <div class="row mt-4 mx-0">
-    <div class="col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+    <div class="col-xxl-4 offset-xxl-4 col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
         <div class="text-center">
             <!-- Detailed view of specific thought -->
             <h1 class="thought-title">{{thought.title}}</h1>
@@ -26,14 +26,16 @@
                 </h4>
             </span>
             <hr>
+            <!-- Content -->
             <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
-
+            <!-- Tags -->
             <div class="tag-container">
                 {% for tag in thought.tags.all %}
                 <a href="/?tags={{tag.pk}}">{{ tag.colored_name }}</a>
                 {% endfor %}
             </div>
             <hr>
+            <!-- Like/Comment count -->
             <div class="row py-0 my-0">
                 <div class="col-sm-4 py-2">
                     <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0">
@@ -74,6 +76,7 @@
         {% for comment in comments %}
             <div class="card center my-4 col-md-10 offset-md-1">
                 <div class="card-body">
+                    <!-- Comment author + time -->
                     <span>
                         {% if comment.anonymous %}
                             <h5 class="card-subtitle mb-2 text-body-secondary">
@@ -89,8 +92,10 @@
                         {% endif %}
                     </span>
                     <h6>{{comment.date_created}}</h6>
+                    <!-- Content -->
                     <p class="card-text">{{comment.content}} </p>
                     <hr>
+                    <!-- Likes -->
                     <div class="row py-0 my-0 text-center">
                         <div class="col-sm-2 offset-sm-1 py-2">
                             <a href="/like_comment/{{comment.id}}" class="link-underline link-underline-opacity-0" aria-label="Like comment">
@@ -102,6 +107,7 @@
                             {{ comment.number_of_likes }} 
                             </a>
                         </div>
+                        <!-- Delete button -->
                         <div class="col-sm-4 offset-sm-4">
                             {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
                             <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger" aria-label="Delete comment">

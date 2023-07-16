@@ -4,10 +4,12 @@
 
 {% load static %}
 
+<!-- Short summary of user -->
 <div class="row mt-4 mx-0">
     <div class="col-10 offset-1 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
         <div class="card center">
             <div class="card-body">
+                <!-- Username and link to search for posts -->
                 <h2 class="card-title text-center">{{user_detail.get_username}} 
                     <a class="btn btn-outline-link" href="/?author={{user_detail.get_username}}" aria-label="Search for posts by User" title="Search for posts by {{user_detail.get_username}}">
                         <i class="fa-solid fa-magnifying-glass"></i>
