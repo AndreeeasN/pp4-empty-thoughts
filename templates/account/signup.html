@@ -17,9 +17,11 @@
                 <button class="btn btn-outline-success" type="submit">{% trans "Sign Up" %} &raquo;</button>
             </form>
             <br>
-            <p>{% blocktrans %}Already have an account? 
+            <p>
+                {% blocktrans %}Already have an account? 
                 <a class="link" href="{{ login_url }}">Sign in</a>
-            {% endblocktrans %}</p>
+                {% endblocktrans %}
+            </p>
         </div>
     </div>
 </div>

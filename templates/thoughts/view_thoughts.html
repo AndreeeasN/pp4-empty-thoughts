@@ -18,7 +18,7 @@
                     </p>
                     <!-- 'Add new thought' button -->
                     <a href="/add">
-                        <button type="button" class="btn btn-primary btn-lg">Share a new thought</button>
+                        <div class="btn btn-primary btn-lg">Share a new thought</div>
                     </a>
                 <!-- Not logged in -->
                 {% else %}
@@ -46,19 +46,19 @@
             <!-- First page, search results -->
             {% if page_obj.number == 1 %}   
                 {% if filter.qs.count > 0 %} 
-                <h3>Found {{filter.qs.count}} search results!</h3>
+                    <h3>Found {{filter.qs.count}} search results!</h3>
                 {% endif %}
             {% else %}
-            <!-- Subsequent search pages -->
-            <h3>Viewing search result page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+                <!-- Subsequent search pages -->
+                <h3>Viewing search result page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
             {% endif %}
         {% else %}
             <!-- First page, non-search -->
             {% if page_obj.number == 1 %} 
-            <h3>Here are the most recent thoughts:</h3>
+                <h3>Here are the most recent thoughts:</h3>
             {% else %}
-            <!-- Subsequent non-search pages -->
-            <h3>Viewing page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+                <!-- Subsequent non-search pages -->
+                <h3>Viewing page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
             {% endif %}
         {% endif %}
     </div>
@@ -72,9 +72,7 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         <!-- Title -->
-                        <a href="/view/{{thought.id}}">
-                        {{thought.title}}
-                        </a>
+                        <a href="/view/{{thought.id}}"> {{thought.title}}</a>
                     </h5>
                     <h6 class="card-subtitle mb-2 text-body-secondary">
                         <!-- Author (By: [User] [(You)?] at [Time]) -->
@@ -95,12 +93,12 @@
                     <hr>
                     <!-- Content -->
                     <div class="content-container">
-                        <p class="card-text">{{thought.content | linebreaks}} </p>
+                        <p class="card-text pt-1 pb-3">{{thought.content | linebreaksbr }} </p>
                     </div>
                     <!-- Tags -->
                     <div class="tag-container">
                         {% for tag in thought.tags.all %}
-                        <a href="/?tags={{tag.pk}}" aria-label="Search by tag '{{tag.name}}'">{{ tag.colored_name }}</a>
+                            <a href="/?tags={{tag.pk}}" aria-label="Search by tag '{{tag.name}}'">{{ tag.colored_name }}</a>
                         {% endfor %}
                     </div>
                     <hr>
@@ -109,14 +107,15 @@
                         <div class="row py-0 my-0">
                             <div class="col-sm-4 py-2">
                                 <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0" aria-label="Like thought">
-                                {% if request.user in thought.likes.all %}
-                                <i class="fa-solid fa-heart"></i>
-                                {% else %}
-                                <i class="fa-regular fa-heart"></i>
-                                {% endif %}
-                                {{ thought.number_of_likes }} </a>| 
+                                    {% if request.user in thought.likes.all %}
+                                        <i class="fa-solid fa-heart"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-heart"></i>
+                                    {% endif %}
+                                    {{ thought.number_of_likes }} 
+                                </a>| 
                                 <a href="/view/{{thought.id}}" class="link-underline link-underline-opacity-0" aria-label="View comment">
-                                <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
+                                    <i class="fa-regular fa-comment-dots"></i> {{ thought.number_of_comments }}
                                 </a>
                             </div>
                             <!-- Edit/Delete buttons -->
@@ -177,14 +176,13 @@
 
                 <!-- 'Next' and 'Last' button -->
                 {% if page_obj.has_next %}
-                <li><a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}" class="page-link">Next &rsaquo;</a></li>
-                <li><a class="page-link" href="?{% url_replace request 'page' paginator.num_pages %}" class="page-link">Last &raquo;</a></li>
+                <li><a class="page-link" href="?{% url_replace request 'page' page_obj.next_page_number %}">Next &rsaquo;</a></li>
+                <li><a class="page-link" href="?{% url_replace request 'page' paginator.num_pages %}">Last &raquo;</a></li>
                 {% endif %}
             </ul>
         </nav>
     </div>
 </div>
 {% endif %}
-
 
 {%endblock%}

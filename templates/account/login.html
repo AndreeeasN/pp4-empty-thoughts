@@ -16,14 +16,16 @@
                 {% csrf_token %}
                 {{ form | crispy }}
                 {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
                 <button class="btn btn-outline-success" type="submit">{% trans "Sign In" %}</button>
             </form>
             <br>
-            <p>{% blocktrans %}Don't have an account yet? 
+            <p>
+                {% blocktrans %}Don't have an account yet? 
                 <a class="link" href="{{ signup_url }}">Sign up</a>
-            {% endblocktrans %}</p>
+                {% endblocktrans %}
+            </p>
         </div>
     </div>
 </div>
