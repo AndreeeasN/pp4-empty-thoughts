@@ -1,39 +1,106 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Empty Thoughts (Name to be changed)
+Description with link to page
 
-Welcome,
+Responsive mockup
 
-This is the Code Institute student template for Codeanywhere. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+## Table of Contents
++ [UX](#ux)
+  + [User Demographic](#user-demographic)
++ [User Stories](#user-stories)
+  + [Admin stories](#admin-stories)
+  + [Visitor stories](#visitor-stories)
++ [Design](#design)
+  + [Colour Scheme](#colour-scheme)
+  + [Typography](#typography)
+  + [Media](#media)
++ [Wireframes](#wireframes)
++ [Database Schema](#database-schema)
++ [Features](#features)
+  + [Existing Features](#existing-features)
+    + [Home Page](#home-page)
+      + [Introduction](#introduction)
+      + [Search](#search)
+      + [Tags](#tags)
+      + [User Profile](#user-profile)
+      + [Pagination](#pagination)
+    + [Navigation (Desktop/mobile?)](#navigation-desktopmobile)
+    + [Account stuff](#account-stuff-login-signup)
+  + [Future Features](#future-features)
++ [Testing](#testing)
+  + [Validator Testing](#validator-testing)
+  + [Fixed Bugs](#fixed-bugs)
+  + [Unfixed Bugs](#unfixed-bugs)
++ [Technologies Used](#technologies-used)
+  + [Main Languages Used](#main-languages-used)
+  + [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
+  + [Installed Packages](#installed-packages)
++ [Deployment](#deployment)
++ [Credits](#credits)
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **May 11th, 2023**
+## UX
 
-## Codeanywhere Reminders
+### User Demographic
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere, in the terminal, type:
+## User Stories
 
-`python3 -m http.server`
+### Admin stories
+### Visitor stories
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+## Design
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere with no-cache, you can use this alias for `python3 -m http.server`.
+### Colour Scheme:
+### Typography:
+### Media:
 
-`http_server`
+## Wireframes
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+## Database Schema
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+## Features
 
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+### Existing Features
 
-To log into the Heroku toolbelt CLI:
+#### Home Page
 
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+##### Introduction
+##### Search
+##### Tags
+##### User Profile
+##### Pagination
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+#### Navigation (Desktop/mobile?)
 
----
+#### Account stuff (login, signup)
 
-Happy coding!
+### Future Features
+
+## Testing
+
+### Validator Testing
+- Html - W3C validator
+- CSS - Jigsaw validator
+- JS - JSHint
+- Python - PEP8 Online
+
+- Lighthouse
+- Other browsers
+- Links?
+
+### Fixed Bugs
+### Unfixed Bugs
+
+## Technologies Used
+
+### Main Languages Used
+- HTML5
+- CSS3
+- Javascript
+- Python
+- SQL - Postgres
+
+### Frameworks, Libraries & Programs Used
+### Installed Packages
+
+## Deployment
+
+## Credits
