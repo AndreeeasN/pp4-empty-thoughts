@@ -198,6 +198,7 @@ class ThoughtDetail(View):
                 request, messages.SUCCESS,
                 'Successfully left a comment.'
                 )
+            return redirect(f'../view/{comment.thought.pk}')
         else:
             comment_form = CommentForm()
             messages.add_message(
@@ -261,7 +262,7 @@ class ThoughtDetail(View):
 class UserDetail(User):
     """
     Display a user profile containing the amount of
-    posts and likes given/received of a specified user
+    posts and likes given/received by a specified user
     """
     def view_user(request, user_id):
         user = get_object_or_404(User, id=user_id)
