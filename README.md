@@ -1,7 +1,9 @@
-# Empty Thoughts (Name to be changed)
-Description with link to page
+# Empty Thoughts (Name to be changed?)
+[Empty Thoughts](https://empty-thoughts-071e97396088.herokuapp.com/) is a platform where you can freely express and share those fleeting thoughts that occur right before falling asleep, in the shower, or during that long daily commute.
+Many of these thoughts go unused or unspoken, yet they often hold a certain charm and potential.
+Empty Thoughts provides you with a canvas to voice these ideas, whether it's a profound insight, a small giggle-worthy joke or simply an empty thought.
 
-Responsive mockup
+[Responsive mockup]
 
 ## Table of Contents
 + [UX](#ux)
@@ -40,6 +42,10 @@ Responsive mockup
 ## UX
 
 ### User Demographic
+
+Empty Thoughts was built to give a voice to unspoken ideas and untapped ideas that otherwise would have been lost to time.
+Meant for anyone with the capacity to dream but lacking a creative outlet, think of it as a chaotic collective diary where drifting thoughts can find a home.
+With the freedom to post anonymously, even the extraordinarily silly or embarrassing can be shared without fear.
 
 ## User Stories
 
