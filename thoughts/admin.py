@@ -16,7 +16,7 @@ class ThoughtAdmin(admin.ModelAdmin):
     """
     Displays user-submitted thoughts in the admin menu
     """
-    search_fields = ['title', 'content']
+    search_fields = ['title', 'content', 'author__username']
     list_display = ('title', 'author', 'time', 'date_updated', 'anonymous')
     list_filter = ('date_created', 'date_updated', 'anonymous')
 
@@ -26,6 +26,6 @@ class CommentAdmin(admin.ModelAdmin):
     """
     Displays comments in the admin menu
     """
-    search_fields = ['author', 'content']
+    search_fields = ['author__username', 'content']
     list_display = ('author', 'content', 'date_created', 'anonymous')
     list_filter = ('date_created', 'anonymous')
