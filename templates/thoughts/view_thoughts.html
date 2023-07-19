@@ -42,7 +42,7 @@
             {% endif %}
         </div>
         <!-- Text above thoughts/search results -->
-        {% if request.GET.search_text or request.GET.author or request.GET.tags %}
+        {% if filter.is_searching %}
             <!-- First page, search results -->
             {% if page_obj.number == 1 %}   
                 {% if filter.qs.count > 0 %} 

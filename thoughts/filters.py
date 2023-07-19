@@ -27,7 +27,6 @@ class ThoughtFilter(django_filters.FilterSet):
         label='Tags:',
     )
 
-    # 
     def filter_search_text(self, queryset, _name, value):
         """
         Returns combined title/content query
@@ -53,6 +52,16 @@ class ThoughtFilter(django_filters.FilterSet):
             for tag in value:
                 queryset = queryset.filter(tags=tag)
         return queryset
+
+    def is_searching(self):
+        """
+        Returns true if any of the 3 fields aren't empty
+        """
+        return (
+            self.data.get('search_text') or
+            self.data.get('author') or
+            self.data.get('tags')
+        )
 
     class Meta:
         model = Thought

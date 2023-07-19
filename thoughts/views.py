@@ -24,7 +24,7 @@ class ThoughtList(generic.ListView):
     def get_context_data(self, **kwargs):
         """
         Sets context to include thoughtFilter,
-        allows us to include our form in the template
+        allows us to include details of our search
         """
         context = super().get_context_data(**kwargs)
         thought_filter = ThoughtFilter(
