@@ -22,7 +22,7 @@
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-sm bg-body-tertiary" data-bs-theme="dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Empty Thoughts</a>
+        <a class="navbar-brand" href="/"><i class="fa-solid fa-cube"></i> Empty Thoughts</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,9 +33,6 @@
               <!-- If a search is in progress, set 'Home' as inactive -->
               <a class="nav-link{% if not filter.is_searching %} active{% endif %}"
               aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/">#About</a>
             </li>
             <!-- Search button, activates the offcanvas search form -->
             <li class="nav-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">

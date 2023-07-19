@@ -28,7 +28,11 @@
                             Have thoughts you rarely get a chance to share?<br>
                             This is the place to share them.
                         </p>
-                        <p class="mb-4">
+                        <p class="mb-3 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+                            Don't let those rare glimpses into your psyche go to waste, 
+                            share them anonymously or embrace your identity in this chaotic space of dreamers!
+                        </p>
+                        <p class="mb-4 fw-bold fst-italic">
                             Join the community to post, comment, and leave likes on posts.
                         </p>
                         <div>
@@ -72,15 +76,15 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         <!-- Title -->
-                        <a href="/view/{{thought.id}}"> {{thought.title}}</a>
+                        <a href="/view/{{thought.id}}"><strong>{{thought.title}}</strong></a>
                     </h5>
                     <h6 class="card-subtitle mb-2 text-body-secondary">
                         <!-- Author (By: [User] [(You)?] at [Time]) -->
                         <span>
                             {% if thought.anonymous %}
-                                By: <strong>Anonymous </strong>
+                                By: Anonymous 
                             {% else %}
-                                By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}} </a></strong>
+                                By: <a href="/user/{{thought.author.pk}}">{{thought.author}} </a>
                             {% endif %}
                             {% if request.user == thought.author %}
                                 (You)
