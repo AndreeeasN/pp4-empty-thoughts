@@ -49,8 +49,18 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 
 ## User Stories
 
-### Admin stories
-### Visitor stories
+### As a visitor
+  - I can login to an account so I can view/post/like thoughts
+  - I can view a list of thoughts so I can read interesting thoughts
+  - I can leave comments so I can interact with those sharing similar interests/thoughts
+  - I can like/unlike individual posts so I can show which ones I enjoy
+  - I can search by category/author so I can find thoughts relevant to my interests
+  - I can mark my posts as anonymous so I can post private thoughts without fear of judgement
+
+### As an admin
+  - I can edit/delete posts so that I can moderate the website
+  - I can manage tags so I can adjust for future content
+  - I can sort through the admin menu so I can quickly find what I'm looking for
 
 ## Design
 
