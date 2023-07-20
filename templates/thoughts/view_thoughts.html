@@ -28,12 +28,13 @@
                             Have thoughts you rarely get a chance to share?<br>
                             This is the place to share them.
                         </p>
-                        <p class="mb-3 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-                            Don't let those rare glimpses into your psyche go to waste, 
-                            share them anonymously or embrace your identity in this chaotic space of dreamers!
+                        <p class="mb-3 col-lg-6 offset-lg-3 col-md-8 offset-md-2 fst-italic">
+                            Capture those fleeting moments of inspiration.<br>
+                            Share anonymously or embrace your identity.<br>
+                            Discover kindred ideas in this space of dreamers.
                         </p>
-                        <p class="mb-4 fw-bold fst-italic">
-                            Join the community to post, comment, and leave likes on posts.
+                        <p class="mb-4 fw-bold">
+                            Join the community to post, comment, and leave likes on posts!
                         </p>
                         <div>
                             <a href="{% url 'account_login' %}" class="btn btn-primary me-2">Log in</a>
@@ -146,6 +147,7 @@
         {% endfor %}
     </div>
 </div>
+
 <!-- Pagination heavily inspired by https://stackoverflow.com/a/46329564 by Rob L -->
 {% if is_paginated %}
 <div class="row mb-4 mx-0">
