@@ -65,8 +65,14 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 ## Design
 
 ### Colour Scheme:
+As the tags attached to posts showcase a plethora of colors the rest of the page has been given a mostly monochrome look as to not make the vibrant colors overbearing.
+Both the header and footer are a darker shade of gray with white text, while the rest of the page is plain white with black text providing ample contrast.
+Clickable links such as thought titles or authors are in the traditional hyperlink blue as to promote intuitive user interaction.
+
 ### Typography:
-### Media:
+The following fonts were obtained from the Google Fonts Library:
+- Header logo - 'Roboto Condensed' by Christian Robertson
+- Navigation and site content - 'Nunito Sans' by Vernon Adams, Jacques Le Bailly, Manvel Shmavonyan and Alexei Vanyashin
 
 ## Wireframes
 
@@ -86,8 +92,6 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 
 #### Navigation (Desktop/mobile?)
 
-#### Account stuff (login, signup)
-
 ### Future Features
 
 ## Testing
@@ -103,6 +107,24 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 - Links?
 
 ### Fixed Bugs
+- When viewing post details, the author(user) and logged in user would overlap in the context
+  - Resolved by simply changing 'user' to 'author' in the view context
+
+- When searching by multiple tags it could return duplicates if posts had multiple matching tags
+  - Resolved by filtering posts by each tag individually (for tag in search)
+
+- Setting the date of a model to current time with (models.DateField(auto_now_add=True)) threw an exception
+  - Resolved by changing it to (models.DateTimeField(default=timezone.now))
+
+- Heroku not using cloudinary static files during development
+  - Resolved by setting Debug=false in settings.py, heroku attempts to serve static files by itself if debug is set to true
+  
+- Refreshing a page after submitting a comment sent another identical comment
+  - Resolved by redirecting to current page without the comment context
+
+- In the admin menu, searching by author would return an exception
+  - Changed search_field from 'author' to 'author__username' to return a string rather than a user object
+
 ### Unfixed Bugs
 
 ## Technologies Used
@@ -115,7 +137,29 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 - SQL - Postgres
 
 ### Frameworks, Libraries & Programs Used
+GitHub
+Visual Studio Code
+Django
+Bootstrap
+JQuery
+Font Awesome
+Google Fonts
+Balsamiq
+DrawSQL
+Paint.NET
+
 ### Installed Packages
+Django
+django-allauth
+psycopg2-binary
+gunicorn
+django-crispy-forms
+crispy-bootstrap5 
+django-colorfield 
+django-select2 
+django-filter
+django-bootstrap-datepicker-plus
+dj3-cloudinary-storage
 
 ## Deployment
 
