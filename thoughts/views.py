@@ -140,8 +140,18 @@ class ThoughtList(generic.ListView):
 
         if thought.likes.filter(id=user.id).exists():
             thought.likes.remove(user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Succesfully unliked a post!'
+                )
         else:
             thought.likes.add(user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Succesfully liked a post!'
+                )
         return redirect('home')
 
 
@@ -232,8 +242,18 @@ class ThoughtDetail(View):
 
         if comment.likes.filter(id=user.id).exists():
             comment.likes.remove(user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Succesfully unliked a comment!'
+                )
         else:
             comment.likes.add(user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                'Succesfully liked a comment!'
+                )
         return redirect(f'../view/{comment.thought.pk}')
 
     def delete_comment(request, comment_id):
