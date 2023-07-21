@@ -6,22 +6,37 @@
 
 <!-- Short summary of user -->
 <div class="row mt-4 mx-0">
-    <div class="col-10 offset-1 col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+    <div class="col-10 offset-1 col-xxl-4 offset-xxl-4 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
         <div class="card center">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <!-- Username and link to search for posts -->
-                <h2 class="card-title text-center">{{user_detail.get_username}} 
-                    <a class="btn btn-outline-link" href="/?author={{user_detail.get_username}}" aria-label="Search for posts by User" title="Search for posts by {{user_detail.get_username}}">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </a>
-                </h2>
+                <h1 class="card-title">{{user_detail.get_username}}</h1>
+                <p class="lead">Member since: <span>{{user_detail.date_joined.date}}</span></p>
                 <hr>
-                <p class="card-text">
-                <strong>Member since: </strong> <span>{{user_detail.date_joined.date}}</span> <br>
-                <strong>Thoughts submitted: </strong> <span>{{user_detail.thoughts.count}}</span> <br>
-                <strong>Comments submitted: </strong> <span>{{user_detail.comment_author.count}}</span> <br>
-                <strong>Likes given: </strong> <span>{{ likes_given }}</span> <br>
-                <strong>Likes received: </strong> <span>{{ likes_received }}</span> <br></p>
+
+                <!-- Horizontal grid for categories -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h3><i class="fa-solid fa-brain"></i> {{user_detail.thoughts.count}}</h3>
+                        <p>Thoughts submitted</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3><i class="fa-solid fa-comments"></i> {{user_detail.comment_author.count}}</h3>
+                        <p>Comments submitted</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3><i class="fa-solid fa-hand-holding-heart"></i> {{ likes_given }}
+                        </h3>
+                        <p>Likes <br>given</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3><i class="fa-solid fa-heart"></i> {{ likes_received }}</h3>
+                        <p>Likes <br> received</p>
+                    </div>
+                </div>
+                <a class="btn btn-outline-secondary" href="/?author={{user_detail.get_username}}" aria-label="Search for posts by User" title="Search for posts by {{user_detail.get_username}}">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search for public posts
+                </a>
             </div>
         </div>
     </div>
