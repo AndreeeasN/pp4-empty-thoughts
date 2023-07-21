@@ -12,10 +12,7 @@
         <!-- Form to edit a thought -->
         <form method="post">
             {% csrf_token %}
-            {{ form | crispy }}
-            <div>
-                <input type="submit" value="Update Thought">
-            </div>
+            {% crispy form %}
         </form>
     </div>
 </div>
@@ -23,4 +20,4 @@
 <!-- Script to enable Select2 widget for tags -->
 <script src="{% static 'js/enableFormTagwidget.js' %}"></script>
 
-{%endblock%}
+{% endblock %}
