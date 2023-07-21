@@ -32,7 +32,7 @@
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <!-- If a search is in progress, set 'Home' as inactive -->
-              <a class="nav-link{% if not filter.is_searching %} active{% endif %}"
+              <a class="nav-link{% if not filter.is_searching and request.resolver_match.url_name == 'home' %} active{% endif %}"
               aria-current="page" href="/">Home</a>
             </li>
             <!-- Search button, activates the offcanvas search form -->
