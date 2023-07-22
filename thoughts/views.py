@@ -232,7 +232,7 @@ class ThoughtDetail(View):
         comment = get_object_or_404(Comment, id=comment_id)
         user = request.user
         # Ensures user is logged in, else redirects to login page
-        if not user_is_owner_or_superuser(user, comment.author):
+        if not user_is_logged_in(user):
             messages.add_message(
                 request,
                 messages.ERROR,
