@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic, View
 from django.contrib import messages
 from django.db.models import Sum
+from django.http import JsonResponse
 from .models import Thought, User, Comment
 from .forms import ThoughtForm, CommentForm
 from .filters import ThoughtFilter
@@ -125,34 +126,54 @@ class ThoughtList(generic.ListView):
     def like_toggle_thought(request, thought_id):
         """
         Adds user to 'likes' of specified thought,
-        if already present removes user instead
+        if already present removes user instead.
+        Supports ajax calls to update like count.
         """
         thought = get_object_or_404(Thought, id=thought_id)
         user = request.user
         # If not logged in, redirects to login page
         if not user_is_logged_in(user):
-            messages.add_message(
-                request,
-                messages.ERROR,
-                'Please sign in to leave likes.'
-                )
-            return redirect('account_login')
+            if request.is_ajax:
+                return JsonResponse(
+                    {"error": "Please sign in to leave likes."}, status=401
+                    )
+            else:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Please sign in to leave likes.'
+                    )
+                return redirect('account_login')
 
-        if thought.likes.filter(id=user.id).exists():
-            thought.likes.remove(user)
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Succesfully unliked a post!'
+        # If AJAX, return if liked and like count
+        if request.is_ajax:
+            if thought.likes.filter(id=user.id).exists():
+                thought.likes.remove(user)
+                liked = False
+            else:
+                thought.likes.add(user)
+                liked = True
+
+            return JsonResponse(
+                {'liked': liked, 'likes_count': thought.number_of_likes()}
                 )
+        # Else redirect home with success message
         else:
-            thought.likes.add(user)
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Succesfully liked a post!'
-                )
-        return redirect('home')
+            if thought.likes.filter(id=user.id).exists():
+                thought.likes.remove(user)
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Succesfully unliked a post!'
+                    )
+            else:
+                thought.likes.add(user)
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Succesfully liked a post!'
+                    )
+            return redirect('home')
 
 
 class ThoughtDetail(View):
@@ -228,33 +249,53 @@ class ThoughtDetail(View):
         """
         Adds user to 'likes' of specified comment,
         if already present removes user instead
+        Supports ajax calls to update like count.
         """
         comment = get_object_or_404(Comment, id=comment_id)
         user = request.user
-        # Ensures user is logged in, else redirects to login page
+        # If not logged in, redirects to login page
         if not user_is_logged_in(user):
-            messages.add_message(
-                request,
-                messages.ERROR,
-                'Please sign in to leave likes.'
-                )
-            return redirect('account_login')
+            if request.is_ajax:
+                return JsonResponse(
+                    {"error": "Please sign in to leave likes."}, status=401
+                    )
+            else:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Please sign in to leave likes.'
+                    )
+                return redirect('account_login')
 
-        if comment.likes.filter(id=user.id).exists():
-            comment.likes.remove(user)
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Succesfully unliked a comment!'
+        # If AJAX, return if liked and like count
+        if request.is_ajax:
+            if comment.likes.filter(id=user.id).exists():
+                comment.likes.remove(user)
+                liked = False
+            else:
+                comment.likes.add(user)
+                liked = True
+
+            return JsonResponse(
+                {'liked': liked, 'likes_count': comment.number_of_likes()}
                 )
+        # Else redirect home with success message
         else:
-            comment.likes.add(user)
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Succesfully liked a comment!'
-                )
-        return redirect(f'../view/{comment.thought.pk}')
+            if comment.likes.filter(id=user.id).exists():
+                comment.likes.remove(user)
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Succesfully unliked a comment!'
+                    )
+            else:
+                comment.likes.add(user)
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    'Succesfully liked a comment!'
+                    )
+            return redirect(f'../view/{comment.thought.pk}')
 
     def delete_comment(request, comment_id):
         """

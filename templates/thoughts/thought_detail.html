@@ -8,6 +8,7 @@
 <div class="row mt-4 mx-0">
     <div class="col-xxl-4 offset-xxl-4 col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
         <div class="text-center">
+            {% csrf_token %}
             <!-- Detailed view of specific thought -->
             <h1 class="thought-title">{{thought.title}}</h1>
             <span>
@@ -38,7 +39,7 @@
             <!-- Like/Comment count -->
             <div class="row py-0 my-0">
                 <div class="col-sm-4 py-2">
-                    <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0">
+                    <a href="/like/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" data-thought-id="{{ thought.id }}">
                     {% if request.user in thought.likes.all %}
                         <i class="fa-solid fa-heart"></i>
                     {% else %}
@@ -55,7 +56,7 @@
                         </a>
                         <!-- Delete button triggers modal through JS, follows href if JS disabled-->
                         <a href="/delete/{{thought.id}}" class="btn btn-outline-danger btn-delete"
-                        data-bs-delete-type="thought" data-bs-delete-id="{{ thought.id }}" data-bs-delete-title='"{{ thought.title }}"'>
+                        data-delete-type="thought" data-delete-id="{{ thought.id }}" data-delete-title='"{{ thought.title }}"'>
                             <i class="fa-regular fa-trash-can"></i> Delete
                         </a>
                     {% endif %}
@@ -100,7 +101,7 @@
                     <!-- Likes -->
                     <div class="row py-0 my-0 text-center">
                         <div class="col-sm-2 offset-sm-1 py-2">
-                            <a href="/like_comment/{{comment.id}}" class="link-underline link-underline-opacity-0" aria-label="Like comment">
+                            <a href="/like_comment/{{comment.id}}" class="like-comment-button link-underline link-underline-opacity-0" aria-label="Like comment" data-comment-id="{{comment.id}}">
                             {% if request.user in comment.likes.all %}
                                 <i class="fa-solid fa-heart"></i>
                             {% else %}
@@ -114,7 +115,7 @@
                             {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
                                 <!-- Triggers modal through JS, follows href if JS disabled-->
                                 <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment"
-                                data-bs-delete-type="comment" data-bs-delete-id="{{ comment.id }}" data-bs-delete-title="comment">
+                                data-delete-type="comment" data-delete-id="{{ comment.id }}" data-delete-title="comment">
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
                             {% endif %}
@@ -129,6 +130,9 @@
     </div>
 </div>
 
+<!-- Scripts to update like count -->
+<script src="{% static 'js/toggleLikeAjax.js' %}"></script>
+<script src="{% static 'js/toggleLikeCommentAjax.js' %}"></script>
 <!-- Script to enable 'btn-delete' modal -->
 <script src="{% static 'js/enableDeleteModal.js' %}"></script>
 

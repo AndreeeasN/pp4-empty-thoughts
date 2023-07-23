@@ -71,6 +71,7 @@
 
 <div class="row mx-0 text-center">
     <div class="col-xxl-4 offset-xxl-4 col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1">
+        {% csrf_token %}
         <!-- Displays all thoughts, hides author if anonymous -->
         {% for thought in thought_list %}
             <div class="card center mt-3">
@@ -111,7 +112,7 @@
                     <div class="container-fluid">
                         <div class="row py-0 my-0">
                             <div class="col-sm-4 py-2">
-                                <a  href="/like/{{thought.id}}" class="link-underline link-underline-opacity-0" aria-label="Like thought">
+                                <a  href="/like/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like thought" data-thought-id="{{ thought.id }}">
                                     {% if request.user in thought.likes.all %}
                                         <i class="fa-solid fa-heart"></i>
                                     {% else %}
@@ -131,7 +132,7 @@
                                 </a>
                                 <!-- Delete button triggers modal through JS, follows href if JS disabled-->
                                 <a href="/delete/{{thought.id}}" class="btn btn-outline-danger btn-delete"
-                                data-bs-delete-type="thought" data-bs-delete-id="{{ thought.id }}" data-bs-delete-title='"{{ thought.title }}"'>
+                                data-delete-type="thought" data-delete-id="{{ thought.id }}" data-delete-title='"{{ thought.title }}"'>
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
                                 {% endif %}
@@ -193,6 +194,8 @@
 </div>
 {% endif %}
 
+<!-- Script to update like count -->
+<script src="{% static 'js/toggleLikeAjax.js' %}"></script>
 <!-- Script to enable 'btn-delete' modal -->
 <script src="{% static 'js/enableDeleteModal.js' %}"></script>
 
