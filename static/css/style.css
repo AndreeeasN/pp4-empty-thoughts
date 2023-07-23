@@ -21,7 +21,7 @@ footer{
 
 .navbar-brand{
     font-family: 'Roboto Condensed', sans-serif;
-    font-size:x-large;
+    font-size: 140%;
     text-transform: uppercase;
 }
 
@@ -40,7 +40,7 @@ footer{
 }
 
 .offcanvas, .offcanvas-body{
-    background-color: rgba(100, 100, 100, 0.5);
+    background-color: rgba(0, 0, 0, 0.175);
 }
 
 /* Tags, half-height buttons */
