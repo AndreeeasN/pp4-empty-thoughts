@@ -39,7 +39,7 @@
             <!-- Like/Comment count -->
             <div class="row py-0 my-0">
                 <div class="col-sm-4 py-2">
-                    <a href="/like/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" data-thought-id="{{ thought.id }}">
+                    <a href="/like/thought/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" data-obj-type="thought" data-obj-id="{{ thought.id }}">
                     {% if request.user in thought.likes.all %}
                         <i class="fa-solid fa-heart"></i>
                     {% else %}
@@ -101,7 +101,7 @@
                     <!-- Likes -->
                     <div class="row py-0 my-0 text-center">
                         <div class="col-sm-2 offset-sm-1 py-2">
-                            <a href="/like_comment/{{comment.id}}" class="like-comment-button link-underline link-underline-opacity-0" aria-label="Like comment" data-comment-id="{{comment.id}}">
+                            <a href="/like/comment/{{comment.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like comment" data-obj-type="comment" data-obj-id="{{ comment.id }}">
                             {% if request.user in comment.likes.all %}
                                 <i class="fa-solid fa-heart"></i>
                             {% else %}
@@ -130,9 +130,8 @@
     </div>
 </div>
 
-<!-- Scripts to update like count -->
+<!-- Scripts to update like counts -->
 <script src="{% static 'js/toggleLikeAjax.js' %}"></script>
-<script src="{% static 'js/toggleLikeCommentAjax.js' %}"></script>
 <!-- Script to enable 'btn-delete' modal -->
 <script src="{% static 'js/enableDeleteModal.js' %}"></script>
 

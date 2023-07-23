@@ -112,7 +112,7 @@
                     <div class="container-fluid">
                         <div class="row py-0 my-0">
                             <div class="col-sm-4 py-2">
-                                <a  href="/like/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like thought" data-thought-id="{{ thought.id }}">
+                                <a  href="/like/thought/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like thought" data-obj-type="thought" data-obj-id="{{ thought.id }}">
                                     {% if request.user in thought.likes.all %}
                                         <i class="fa-solid fa-heart"></i>
                                     {% else %}

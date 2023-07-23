@@ -123,57 +123,62 @@ class ThoughtList(generic.ListView):
                 )
         return redirect('home')
 
-    def like_toggle_thought(request, thought_id):
+    def like_toggle(request, object_id, object_type):
         """
-        Adds user to 'likes' of specified thought,
+        Adds user to 'likes' of specified thought or comment,
         if already present removes user instead.
         Supports ajax calls to update like count.
         """
-        thought = get_object_or_404(Thought, id=thought_id)
+        model = Thought if object_type == 'thought' else Comment
+
+        obj = get_object_or_404(model, id=object_id)
         user = request.user
         # If not logged in, redirects to login page
         if not user_is_logged_in(user):
+            messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Please sign in to leave likes.'
+                    )
             if request.is_ajax:
                 return JsonResponse(
                     {"error": "Please sign in to leave likes."}, status=401
                     )
             else:
-                messages.add_message(
-                    request,
-                    messages.ERROR,
-                    'Please sign in to leave likes.'
-                    )
                 return redirect('account_login')
 
         # If AJAX, return if liked and like count
         if request.is_ajax:
-            if thought.likes.filter(id=user.id).exists():
-                thought.likes.remove(user)
+            if obj.likes.filter(id=user.id).exists():
+                obj.likes.remove(user)
                 liked = False
             else:
-                thought.likes.add(user)
+                obj.likes.add(user)
                 liked = True
 
             return JsonResponse(
-                {'liked': liked, 'likes_count': thought.number_of_likes()}
+                {'liked': liked, 'likes_count': obj.number_of_likes()}
                 )
         # Else redirect home with success message
         else:
-            if thought.likes.filter(id=user.id).exists():
-                thought.likes.remove(user)
+            if obj.likes.filter(id=user.id).exists():
+                obj.likes.remove(user)
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Succesfully unliked a post!'
+                    f'Succesfully unliked a {object_type}!'
                     )
             else:
-                thought.likes.add(user)
+                obj.likes.add(user)
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Succesfully liked a post!'
+                    f'Succesfully liked a {object_type}!'
                     )
-            return redirect('home')
+            if object_type == 'thought':
+                return redirect('home')
+            else:
+                return redirect(f'../view/{obj.thought.pk}')
 
 
 class ThoughtDetail(View):
@@ -244,58 +249,6 @@ class ThoughtDetail(View):
                 "comment_form": CommentForm(),
             }
         return render(request, "thoughts/thought_detail.html", context)
-
-    def like_toggle_comment(request, comment_id):
-        """
-        Adds user to 'likes' of specified comment,
-        if already present removes user instead
-        Supports ajax calls to update like count.
-        """
-        comment = get_object_or_404(Comment, id=comment_id)
-        user = request.user
-        # If not logged in, redirects to login page
-        if not user_is_logged_in(user):
-            if request.is_ajax:
-                return JsonResponse(
-                    {"error": "Please sign in to leave likes."}, status=401
-                    )
-            else:
-                messages.add_message(
-                    request,
-                    messages.ERROR,
-                    'Please sign in to leave likes.'
-                    )
-                return redirect('account_login')
-
-        # If AJAX, return if liked and like count
-        if request.is_ajax:
-            if comment.likes.filter(id=user.id).exists():
-                comment.likes.remove(user)
-                liked = False
-            else:
-                comment.likes.add(user)
-                liked = True
-
-            return JsonResponse(
-                {'liked': liked, 'likes_count': comment.number_of_likes()}
-                )
-        # Else redirect home with success message
-        else:
-            if comment.likes.filter(id=user.id).exists():
-                comment.likes.remove(user)
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    'Succesfully unliked a comment!'
-                    )
-            else:
-                comment.likes.add(user)
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    'Succesfully liked a comment!'
-                    )
-            return redirect(f'../view/{comment.thought.pk}')
 
     def delete_comment(request, comment_id):
         """
