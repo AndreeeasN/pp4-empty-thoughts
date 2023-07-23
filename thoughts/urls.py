@@ -17,4 +17,5 @@ urlpatterns = [
         name='like'
         ),
     path('view/<thought_id>', views.ThoughtDetail.as_view(), name='view'),
+    path('user/<user_id>', views.UserDetail.view_user, name='user'),
 ]
