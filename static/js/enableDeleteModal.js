@@ -1,12 +1,12 @@
 // Script to enable bootstrap confirmation modal on class .btn-delete
-// .btn-delete requires bs-data-delete-type, bs-data-delete-id and bs-data-delete-title
+// .btn-delete requires attributes data-delete-type, data-delete-id and data-delete-title
 $(document).ready(function() {
   // Get modal elements and buttons through jquery
   const deleteModalTitle = document.querySelector('#delete-modal-title');
   const btnDelete = document.querySelector('#delete-modal-button');
   let deleteButtons = document.querySelectorAll('.btn-delete');
 
-  // Used to get partial url based on bs-data-delete-type
+  // Used to get partial url based on data-delete-type
   let deleteTypeToUrl ={
     "thought": "delete",
     "comment": "delete_comment",
@@ -20,15 +20,15 @@ $(document).ready(function() {
           event.preventDefault();
           
           // If button has no delete type, follow fallback href of button
-          let deleteType = button.getAttribute('data-bs-delete-type')
+          let deleteType = button.getAttribute('data-delete-type')
           let deleteUrl = deleteTypeToUrl[deleteType]
           if (!deleteUrl) {
             window.location.href = button.getAttribute('href');
             return;
           }
           
-          let deleteID = button.getAttribute('data-bs-delete-id');
-          let deleteTitle = button.getAttribute('data-bs-delete-title');
+          let deleteID = button.getAttribute('data-delete-id');
+          let deleteTitle = button.getAttribute('data-delete-title');
 
           deleteModalTitle.textContent = `Delete ${deleteTitle}?`;
           btnDelete.setAttribute('href', `/${deleteUrl}/${deleteID}`);
