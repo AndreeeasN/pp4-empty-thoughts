@@ -101,27 +101,30 @@ class ThoughtList(generic.ListView):
         }
         return render(request, 'thoughts/edit_thought.html', context)
 
-    def delete_thought(request, thought_id):
+    def delete(request, object_type, object_id):
         """
-        Deletes thought with the specified id
+        Deletes thought or comment with the specified id
         """
-        thought = get_object_or_404(Thought, id=thought_id)
-
+        model = Thought if object_type == 'thought' else Comment
+        obj = get_object_or_404(model, id=object_id)
         # Ensures only the owner/superuser may delete
-        if not user_is_owner_or_superuser(request.user, thought.author):
+        if not user_is_owner_or_superuser(request.user, obj.author):
             messages.add_message(
                 request,
                 messages.ERROR,
                 'Only the owner may delete this post.'
                 )
         else:
-            thought.delete()
+            obj.delete()
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                'Post successfully deleted.'
+                f'{object_type.capitalize()} successfully deleted.'
                 )
-        return redirect('home')
+        if object_type == 'comment':
+            return redirect(f'/view/{obj.thought.pk}')
+        else:
+            return redirect('home')
 
     def like_toggle(request, object_id, object_type):
         """
@@ -175,10 +178,10 @@ class ThoughtList(generic.ListView):
                     messages.SUCCESS,
                     f'Succesfully liked a {object_type}!'
                     )
-            if object_type == 'thought':
-                return redirect('home')
+            if object_type == 'comment':
+                return redirect(f'/view/{obj.thought.pk}')
             else:
-                return redirect(f'../view/{obj.thought.pk}')
+                return redirect('home')
 
 
 class ThoughtDetail(View):
@@ -249,28 +252,6 @@ class ThoughtDetail(View):
                 "comment_form": CommentForm(),
             }
         return render(request, "thoughts/thought_detail.html", context)
-
-    def delete_comment(request, comment_id):
-        """
-        Deletes comment with specified id
-        """
-        comment = get_object_or_404(Comment, id=comment_id)
-
-        # Ensures only the owner/superuser may delete
-        if not user_is_owner_or_superuser(request.user, comment.author):
-            messages.add_message(
-                request,
-                messages.ERROR,
-                'Only the owner may delete this comment.'
-                )
-        else:
-            comment.delete()
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                'Comment successfully deleted.'
-                )
-        return redirect(f'../view/{comment.thought.pk}')
 
 
 class UserDetail(User):

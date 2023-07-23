@@ -114,7 +114,7 @@
                         <div class="col-sm-4 offset-sm-4">
                             {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
                                 <!-- Triggers modal through JS, follows href if JS disabled-->
-                                <a href="/delete_comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment"
+                                <a href="/delete/comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment" data-delete-type="comment" data-delete-id="{{ comment.id }}"
                                 data-delete-type="comment" data-delete-id="{{ comment.id }}" data-delete-title="comment">
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
