@@ -316,4 +316,4 @@ def user_is_owner_or_superuser(user, object_owner):
     Used to check if user is the owner
     of an object or is a superuser
     """
-    return user is object_owner or user.is_superuser
+    return user == object_owner or user.is_superuser
