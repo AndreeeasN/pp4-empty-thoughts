@@ -51,19 +51,19 @@
             <!-- First page, search results -->
             {% if page_obj.number == 1 %}   
                 {% if filter.qs.count > 0 %} 
-                    <h3>Found {{filter.qs.count}} search results!</h3>
+                    <h2>Found {{filter.qs.count}} search results!</h2>
                 {% endif %}
             {% else %}
                 <!-- Subsequent search pages -->
-                <h3>Viewing search result page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+                <h2>Viewing search result page {{page_obj.number}} of {{paginator.num_pages}}:</h2>
             {% endif %}
         {% else %}
             <!-- First page, non-search -->
             {% if page_obj.number == 1 %} 
-                <h3>Here are the most recent thoughts:</h3>
+                <h2>Here are the most recent thoughts:</h2>
             {% else %}
                 <!-- Subsequent non-search pages -->
-                <h3>Viewing page {{page_obj.number}} of {{paginator.num_pages}}:</h3>
+                <h2>Viewing page {{page_obj.number}} of {{paginator.num_pages}}:</h2>
             {% endif %}
         {% endif %}
     </div>
@@ -76,11 +76,11 @@
         {% for thought in thought_list %}
             <div class="card center mt-3">
                 <div class="card-body">
-                    <h5 class="card-title">
+                    <h3 class="card-title">
                         <!-- Title -->
                         <a href="/view/{{thought.id}}"><strong>{{thought.title}}</strong></a>
-                    </h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                    </h3>
+                    <h4 class="card-subtitle mb-2 text-body-secondary">
                         <!-- Author (By: [User] [(You)?] at [Time]) -->
                         {% if thought.anonymous %}
                             By: Anonymous 
@@ -93,7 +93,7 @@
                         {% if thought.time%}
                             at <strong>{{thought.time}}</strong>
                         {% endif %}
-                    </h6>
+                    </h4>
                     <hr>
                     <!-- Content -->
                     <div class="content-container">
