@@ -12,13 +12,14 @@ body{
 }
 
 p{
-    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 footer{
     margin-top: auto;
 }
 
+/* Navbar */
 .navbar-brand{
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 140%;
@@ -29,11 +30,13 @@ footer{
     color: red;
 }
 
+/* Thought cards */
 .thought-title, .thought-content{
     max-width: 100%;
     overflow-wrap: break-word;
 }
 
+/* Search Sidebar */
 .offcanvas-header{
     color: white;
     background-color: #2b3035;
@@ -54,7 +57,7 @@ footer{
     list-style: none;
 }
 
-/* Select2 is not responsive, ensure it resizes */
+/* Select2 widget not responsive, ensure it resizes */
 .select2{
     width: 100% !important;
 }
@@ -63,15 +66,3 @@ footer{
 .pagination{
     flex-wrap: wrap;
 }
-
-/* .select2-search { background-color: #00f; }
-.select2-search input { background-color: #00f; }
-.select2-selection--multiple { background-color: #00f !important; }
-.select2-results { background-color: #00f; } */
-
-/* Overrides select2 default style for tag colors */
-/* .select2-selection__choice {
-    color: black;
-    background-color: red !important;
-    border: 1px solid black !important;
-  } */
