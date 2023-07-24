@@ -97,7 +97,9 @@
                     <!-- Likes -->
                     <div class="row py-0 my-0 text-center">
                         <div class="col-sm-2 offset-sm-1 py-2">
-                            <a href="/like/comment/{{comment.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like comment" data-obj-type="comment" data-obj-id="{{ comment.id }}">
+                            <a href="/like/comment/{{comment.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like comment"
+                            data-obj-type="comment"
+                            data-obj-id="{{ comment.id }}">
                             {% if request.user in comment.likes.all %}
                                 <i class="fa-solid fa-heart"></i>
                             {% else %}
@@ -108,9 +110,12 @@
                         </div>
                         <!-- Delete button -->
                         <div class="col-sm-4 offset-sm-4">
-                            {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
+                            {% if request.user == comment.author or request.user.is_superuser %}
                                 <!-- Triggers modal through JS, follows href if JS disabled-->
-                                <a href="/delete/comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment" data-delete-type="comment" data-delete-id="{{ comment.id }}">
+                                <a href="/delete/comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment"
+                                data-delete-type="comment"
+                                data-delete-id="{{ comment.id }}"
+                                data-delete-title="comment{% if not comment.anonymous %} by {{comment.author}}{% endif %}">
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
                             {% endif %}

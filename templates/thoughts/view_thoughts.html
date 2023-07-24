@@ -110,7 +110,9 @@
                     <div class="container-fluid">
                         <div class="row py-0 my-0">
                             <div class="col-sm-4 py-2">
-                                <a  href="/like/thought/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like thought" data-obj-type="thought" data-obj-id="{{ thought.id }}">
+                                <a  href="/like/thought/{{thought.id}}" class="like-button link-underline link-underline-opacity-0" aria-label="Like thought"
+                                data-obj-type="thought"
+                                data-obj-id="{{ thought.id }}">
                                     {% if request.user in thought.likes.all %}
                                         <i class="fa-solid fa-heart"></i>
                                     {% else %}
@@ -130,7 +132,9 @@
                                 </a>
                                 <!-- Delete button triggers modal through JS, follows href if JS disabled-->
                                 <a href="/delete/thought/{{thought.id}}" class="btn btn-outline-danger btn-delete"
-                                data-delete-type="thought" data-delete-id="{{ thought.id }}" data-delete-title='"{{ thought.title }}"'>
+                                data-delete-type="thought"
+                                data-delete-id="{{ thought.id }}"
+                                data-delete-title='"{{ thought.title }}"'>
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
                                 {% endif %}
