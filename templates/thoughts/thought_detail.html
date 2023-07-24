@@ -7,28 +7,26 @@
 {% load crispy_forms_tags %}
 <div class="row mt-4 mx-0">
     <div class="col-xxl-4 offset-xxl-4 col-10 offset-1 col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-        <div class="text-center">
+        <div class="text-center mb-4">
             {% csrf_token %}
             <!-- Detailed view of specific thought -->
             <h1 class="thought-title">{{thought.title}}</h1>
-            <span>
-                <h4 class="lead">
-                {% if thought.anonymous %}
-                    By: <strong>Anonymous</strong>
-                {% else %}
-                    By: <strong><a a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
-                {% endif %}
-                {% if request.user == thought.author %}
-                    (You)
-                {% endif %}
-                {% if thought.time%}
-                    at <strong>{{thought.time}}</strong>
-                {% endif %}
-                </h4>
-            </span>
+            <h4 class="lead">
+            {% if thought.anonymous %}
+                By: <strong>Anonymous</strong>
+            {% else %}
+                By: <strong><a href="/user/{{thought.author.pk}}">{{thought.author}}</a></strong>
+            {% endif %}
+            {% if request.user == thought.author %}
+                (You)
+            {% endif %}
+            {% if thought.time%}
+                at <strong>{{thought.time}}</strong>
+            {% endif %}
+            </h4>
             <hr>
             <!-- Content -->
-            <p class="card-text thought-content">{{thought.content | linebreaks}} </p>
+            <div class="content-container">{{thought.content | linebreaks}} </div>
             <!-- Tags -->
             <div class="tag-container">
                 {% for tag in thought.tags.all %}
@@ -67,7 +65,6 @@
         <!-- Comment form -->
         {% if user.is_authenticated %}
             <h3>Leave a comment:</h3>
-            <p>Posting as: {{ user.username }}</p>
             <form method="post">
                 {% csrf_token %}
                 {{ comment_form | crispy }}
@@ -80,22 +77,21 @@
             <div class="card center my-4 col-md-10 offset-md-1">
                 <div class="card-body">
                     <!-- Comment author + time -->
-                    <span>
-                        {% if comment.anonymous %}
-                            <h5 class="card-subtitle mb-2 text-body-secondary">
-                                Anonymous 
-                                {% if request.user == comment.author %}
-                                    (You)
-                                {% endif %}
-                            </h5>
-                        {% else %}
-                            <h5 class="card-subtitle mb-2 text-body-secondary">
-                                <a a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
-                            </h5>
-                        {% endif %}
-                    </span>
+                    {% if comment.anonymous %}
+                        <h5 class="card-subtitle mb-2 text-body-secondary">
+                            Anonymous 
+                            {% if request.user == comment.author %}
+                                (You)
+                            {% endif %}
+                        </h5>
+                    {% else %}
+                        <h5 class="card-subtitle mb-2 text-body-secondary">
+                            <a href="/user/{{comment.author.pk}}">{{comment.author}}</a>
+                        </h5>
+                    {% endif %}
                     <h6>{{comment.date_created}}</h6>
                     <!-- Content -->
+                    <hr>
                     <p class="card-text">{{comment.content}} </p>
                     <hr>
                     <!-- Likes -->
@@ -114,8 +110,7 @@
                         <div class="col-sm-4 offset-sm-4">
                             {% if request.user == comment.author or request.user == thought.author or request.user.is_superuser %}
                                 <!-- Triggers modal through JS, follows href if JS disabled-->
-                                <a href="/delete/comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment" data-delete-type="comment" data-delete-id="{{ comment.id }}"
-                                data-delete-type="comment" data-delete-id="{{ comment.id }}" data-delete-title="comment">
+                                <a href="/delete/comment/{{comment.id}}" class="btn btn-outline-danger btn-delete" aria-label="Delete comment" data-delete-type="comment" data-delete-id="{{ comment.id }}">
                                     <i class="fa-regular fa-trash-can"></i> Delete
                                 </a>
                             {% endif %}

@@ -31,7 +31,7 @@
                         <p class="mb-3 col-lg-6 offset-lg-3 col-md-8 offset-md-2 fst-italic">
                             Capture those fleeting moments of inspiration.<br>
                             Share anonymously or embrace your identity.<br>
-                            Discover kindred ideas in this space of dreamers.
+                            Discover a community of like-minded dreamers.
                         </p>
                         <p class="mb-4 fw-bold">
                             Join the community to post, comment, and leave likes on posts!
@@ -82,19 +82,17 @@
                     </h5>
                     <h6 class="card-subtitle mb-2 text-body-secondary">
                         <!-- Author (By: [User] [(You)?] at [Time]) -->
-                        <span>
-                            {% if thought.anonymous %}
-                                By: Anonymous 
-                            {% else %}
-                                By: <a href="/user/{{thought.author.pk}}">{{thought.author}} </a>
-                            {% endif %}
-                            {% if request.user == thought.author %}
-                                (You)
-                            {% endif %}
-                            {% if thought.time%}
-                                at <strong>{{thought.time}}</strong>
-                            {% endif %}
-                        </span>
+                        {% if thought.anonymous %}
+                            By: Anonymous 
+                        {% else %}
+                            By: <a href="/user/{{thought.author.pk}}">{{thought.author}} </a>
+                        {% endif %}
+                        {% if request.user == thought.author %}
+                            (You)
+                        {% endif %}
+                        {% if thought.time%}
+                            at <strong>{{thought.time}}</strong>
+                        {% endif %}
                     </h6>
                     <hr>
                     <!-- Content -->
