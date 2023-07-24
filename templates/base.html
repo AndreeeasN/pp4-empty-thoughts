@@ -38,8 +38,7 @@
             <!-- Search button, activates the offcanvas search form -->
             <li class="nav-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
               <!-- If a search is in progress, set 'Search' as active -->
-              <a class="nav-link{% if filter.is_searching %} active{% endif %}"
-              href="javascript:void(0);">Search <i class="fa-solid fa-magnifying-glass"></i></a>
+              <button class="nav-link{% if filter.is_searching %} active{% endif %}">Search <i class="fa-solid fa-magnifying-glass"></i></button>
             </li>
           </ul>
           
