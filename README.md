@@ -1,41 +1,30 @@
-# Empty Thoughts (Name to be changed?)
-[Empty Thoughts](https://empty-thoughts-071e97396088.herokuapp.com/) is a platform where you can freely express and share those fleeting thoughts that occur right before falling asleep, in the shower, or during that long daily commute.
-Many of these thoughts go unused or unspoken, yet they often hold a certain charm and potential.
+# Empty Thoughts
+[Empty Thoughts](https://empty-thoughts-071e97396088.herokuapp.com/) is a platform where you can freely express and share those fleeting thoughts that occur late at night before falling asleep, in the shower, or during that long daily commute.
+Many of these daily thoughts go unused or unspoken, yet they often hold a certain charm and potential.
 Empty Thoughts provides you with a canvas to voice these ideas, whether it's a profound insight, a small giggle-worthy joke or simply an empty thought.
 
-[Responsive mockup]
+![Am-I-Responsive mockup](static/images/readme/pp4-responsive.png)
 
 ## Table of Contents
 + [UX](#ux)
   + [User Demographic](#user-demographic)
-+ [User Stories](#user-stories)
-  + [Admin stories](#admin-stories)
-  + [Visitor stories](#visitor-stories)
+  + [User Stories](#user-stories)
 + [Design](#design)
   + [Colour Scheme](#colour-scheme)
   + [Typography](#typography)
-  + [Media](#media)
 + [Wireframes](#wireframes)
 + [Database Schema](#database-schema)
 + [Features](#features)
   + [Existing Features](#existing-features)
-    + [Home Page](#home-page)
-      + [Introduction](#introduction)
-      + [Search](#search)
-      + [Tags](#tags)
-      + [User Profile](#user-profile)
-      + [Pagination](#pagination)
-    + [Navigation (Desktop/mobile?)](#navigation-desktopmobile)
-    + [Account stuff](#account-stuff-login-signup)
+    + [Navigation](#navigation)
+    + [Main Page](#main-page)
+    + [Thought Detail Page](#thought-detail-page)
   + [Future Features](#future-features)
 + [Testing](#testing)
+  + [Discovered Bugs](#discovered-bugs)
   + [Validator Testing](#validator-testing)
-  + [Fixed Bugs](#fixed-bugs)
   + [Unfixed Bugs](#unfixed-bugs)
 + [Technologies Used](#technologies-used)
-  + [Main Languages Used](#main-languages-used)
-  + [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
-  + [Installed Packages](#installed-packages)
 + [Deployment](#deployment)
 + [Credits](#credits)
 
@@ -167,40 +156,65 @@ A larger view of specific thought, has exact same functionality as when viewed f
   - Can be deleted by the owner of the comment or a superuser.
 
 ### Future Features
-- User site preferences (Dark mode, Search results per page)
+- Password resets
+- User site preferences (Dark mode, Search results per page, etc.)
 - Customizing user profile
 - Commenting on user profiles
 
 ## Testing
 
-### Validator Testing
-- Html - W3C validator
-- CSS - Jigsaw validator
-- JS - JSHint
-- Python - PEP8 Online
-
-- Lighthouse
-- Other browsers
-- Links?
-
-### Fixed Bugs
+### Discovered Bugs
 - When viewing post details, the author(user) and logged in user would overlap in the context
-  - Resolved by changing 'user' to 'author' in the view context
+  - This would end up displaying the author of the post as the user currently logged in which ended up difficult to notice during development before introducing a second account
+  - Resolved by changing 'user' to 'author' in the view context to avoid conflicts
+
+- When attempting to like another user's comment when logged in as a non-superuser you would be redirected to the login page with the message "Must be logged in to leave likes"
+  - This was caused by a misplaced safety check, rather than checking if user was authenticated it would check if user was a superuser
+  - Resolved by replacing the function user_is_owner_or_superuser with the function user_is_logged_in in the corresponding view
 
 - When searching by multiple tags it could return duplicates if posts had multiple matching tags
   - Resolved by filtering posts by each tag individually (loop -> for tag in search)
 
-- Setting the date of a model to current time with (models.DateField(auto_now_add=True)) threw an exception
+- Setting the date of a model to current time using (models.DateField(auto_now_add=True)) threw an exception
   - Resolved by changing it to (models.DateTimeField(default=timezone.now))
 
 - Heroku not using cloudinary static files during development
-  - Resolved by setting Debug=false in settings.py, heroku attempts to serve static files by itself if debug is set to true
-  
-- Refreshing a page after submitting a comment sent another identical comment
-  - Resolved by redirecting to current page without the comment context
+  - Heroku attempts to serve static files by itself if debug is set to true in settings
+  - Resolved by setting Debug=false in settings.py
 
-- In the admin menu, searching by author would return an exception
+- When checking for ownership of an object it would come back false if not a superuser
+  - This was due to a faulty comparison in the function user_is_owner_or_superuser
+  - Resolved by replacing (user is object_owner) with (user == object_owner)
+
+- Refreshing a page after submitting a comment sent another identical comment
+  - This was caused by the comment form context being included on refresh
+  - Resolved by redirecting without the comment context upon succesfully submitting a comment
+
+- In the admin menu, searching by author would throw an exception
   - Changed search_field from 'author' to 'author__username' to return a string rather than a user object
+
+- On deleting a comment the deletion modal would display "Delete null?"
+  - This was due to the delete button missing a title attribute required by the JS handling the confirmation modal.
+  - Resolved by adding the missing attribute data-delete-title to the delete button
+
+### Validator Testing
+- Html
+  - All html pages pass through the [W3C Validator](https://validator.w3.org/) without issues
+- CSS
+  - CSS files pass through the [W3C jigsaw validator](https://jigsaw.w3.org/css-validator/) without errors<br>
+  ![w3C Validator](static/images/readme/pp4-W3C-CSS.png)
+- JS
+  - All JS files pass through the [JSHint Validator](https://jshint.com/) without issues
+- Python
+  - Python files pass through the [CI Python linter](https://pep8ci.herokuapp.com/) without issues
+- Lighthouse audit<br>
+  ![Lighthouse Audit](static/images/readme/pp4-lighthouse.png)
+- The website has been tested to work in the following browsers:
+  - Google Chrome
+  - Mozilla Firefox
+  - Microsoft Edge
+  - Opera
+- All external links open in a separate tab as intended.
 
 ### Unfixed Bugs
 
