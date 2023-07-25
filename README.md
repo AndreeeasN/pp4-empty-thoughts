@@ -38,9 +38,11 @@ With the freedom to post anonymously, even the extraordinarily silly or embarras
 
 ### User Stories
 
+Project board can be found [here](https://github.com/users/AndreeeasN/projects/1)
+
 #### As a visitor
   - I can login to an account so I can view/post/like thoughts
-  - I can view a list of thoughts so I can read interesting thoughts
+  - I can view a list of posts so I can read interesting thoughts
   - I can leave comments so I can interact with those sharing similar interests/thoughts
   - I can like/unlike individual posts so I can show which ones I enjoy
   - I can search by category/author so I can find thoughts relevant to my interests
@@ -60,8 +62,8 @@ Clickable links such as thought titles or authors are in the traditional hyperli
 
 ### Typography:
 The following fonts were obtained from the Google Fonts Library:
-- Header logo - 'Roboto Condensed' by Christian Robertson
-- Navigation and site content - 'Nunito Sans' by Vernon Adams, Jacques Le Bailly, Manvel Shmavonyan and Alexei Vanyashin
+- 'Roboto Condensed' - used for the Header logo
+- 'Nunito Sans' - used for the navbar and all other site content
 
 ## Wireframes
 - Home page<br>
@@ -163,6 +165,9 @@ A larger view of specific thought, has exact same functionality as when viewed f
 
 ## Testing
 
+Normally Django will use a connection to a temporary postgres database to avoid running queries against the production database when running automated tests, the free tier of elephantSQL does however not allow more than one database. 
+Due to this, tests have been carried out manually for each new feature introduced.
+
 ### Discovered Bugs
 - When viewing post details, the author(user) and logged in user would overlap in the context
   - This would end up displaying the author of the post as the user currently logged in which ended up difficult to notice during development before introducing a second account
@@ -175,7 +180,7 @@ A larger view of specific thought, has exact same functionality as when viewed f
 - When searching by multiple tags it could return duplicates if posts had multiple matching tags
   - Resolved by filtering posts by each tag individually (loop -> for tag in search)
 
-- Setting the date of a model to current time using (models.DateField(auto_now_add=True)) threw an exception
+- Setting the date of a model to current time using (models.DateField(auto_now_add=True)) would throw an exception
   - Resolved by changing it to (models.DateTimeField(default=timezone.now))
 
 - Heroku not using cloudinary static files during development
@@ -191,7 +196,8 @@ A larger view of specific thought, has exact same functionality as when viewed f
   - Resolved by redirecting without the comment context upon succesfully submitting a comment
 
 - In the admin menu, searching by author would throw an exception
-  - Changed search_field from 'author' to 'author__username' to return a string rather than a user object
+  - This was due to 'author' in search_field returning a user object rather than a username
+  - Resolved by changing 'author' in search_field to 'author__username' to return a username
 
 - On deleting a comment the deletion modal would display "Delete null?"
   - This was due to the delete button missing a title attribute required by the JS handling the confirmation modal.
@@ -252,7 +258,58 @@ django-select2
 django-filter
 django-bootstrap-datepicker-plus
 dj3-cloudinary-storage
+dj_database_url
 
 ## Deployment
 
+### Heroku
+The app was deployed to [Heroku](https://www.heroku.com/) using the following steps:
+
+1. Ensure the following packages are installed to use Heroku, ElephantSQL and Cloudinary:
+    - Django
+    - gunicorn
+    - dj_database_url
+    - psycopg2
+    - dj3-cloudinary-storage
+2. Create a new app from the [Heroku dashboard](https://dashboard.heroku.com/apps)
+3. Select your heroku app from the menu and enter the 'Settings' tab
+4. Click 'Reveal Config Vars'
+5. Input all relevant key:value pairs 
+    - SECRET KEY : (Your secret key)
+    - PORT : 8000
+    - CLOUDINARY_URL : (Your Cloudinary API Environment variable)
+    - DATABASE_URL : (Your ElephantSQL postgres URL)
+6. Underneath, click 'Add Buildpack' and select the Python Buildpack
+6. Add the following to your project settings.py:
+    - ALLOWED_HOSTS = [(Your heroku app url), '127.0.0.1']  (second address included for local testing)
+    - STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+    - DATABASES = { 'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
+7. Create a Procfile with the following line
+    - web: gunicorn (YOUR_APP_NAME).wsgi:application
+8. Commit and push changes to GitHub
+9. Go to your Heroku app and select the 'Deploy' tab
+10. Select your deployment method, in our case we deployed through GitHub
+11. From here you can either:
+    - Deploy your project manually using the 'Deploy Branch' button.
+    - Enable Automatic deploys to deploy everytime a new commit is pushed to the repository.
+12. After a short time your app should be deployed and available from the 'Open App' button in the top right corner
+
 ## Credits
+### Fonts used:
+  - 'Roboto Condensed' by Christian Robertson
+  - 'Nunito Sans' by Vernon Adams, Jacques Le Bailly, Manvel Shmavonyan and Alexei Vanyashin
+
+### Code Snippets used:
+  - [StackOverflow](https://stackoverflow.com/a/67526160) - Replacing part of url through templating by Mojtaba Arezoomand, used for paginating search results
+  - [StackOverflow](https://stackoverflow.com/questions/30864011/display-only-some-of-the-page-numbers-by-django-pagination/46329564#46329564) - Enumerated pagination bar by Rob L, adapted to include 'jump to first/last' buttons
+
+### Resources and tutorials used in developing this project:
+  - [Code Institute](https://code-institute-students.github.io/deployment-docs/02-elephantsql/elephantsql-01-sign-up) - Setting up ElephantSQL
+  - [Dan's Cheat Sheets](https://cheat.readthedocs.io/en/latest/django/filter.html) - Filtering and Pagination in Django by Dan Poirier
+  - [Codu.co](https://www.codu.co/articles/securing-django-views-from-unauthorized-access-npyb3to_) - Securing Django views from unauthorized access by Daisy McGirr
+  - [SimpleIsBetterThanComplex](https://simpleisbetterthancomplex.com/tutorial/2018/11/28/advanced-form-rendering-with-django-crispy-forms.html) - Advanced Form Rendering with Django Crispy by Vitor Freitas
+  - [StackOverflow](https://stackoverflow.com/questions/46940623/how-to-do-i-automatically-set-the-user-field-to-current-user-in-django-modelform) - Automatically setting the author of a form 
+  - [StackOverflow](https://stackoverflow.com/a/3930320) - Converting NoneType to int, used when calculating total user likes
+  - [StackOverflow](https://stackoverflow.com/questions/71798874/django-how-to-add-or-condition-to-queryset-filter-in-custom-filter) - Combining multiple querysets in django
+  - [StackOverflow](https://stackoverflow.com/questions/65157917/django-core-exceptions-fielderror-date-cannot-be-specified-for-forum-model-fo) - Setting datetime of models to current time on creation
+  - [StackOverflow](https://stackoverflow.com/questions/5100539/django-csrf-check-failing-with-an-ajax-post-request) - Including CSRF token in Ajax post request
