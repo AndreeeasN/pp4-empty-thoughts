@@ -9,6 +9,9 @@ from .filters import ThoughtFilter
 
 
 class ThoughtList(generic.ListView):
+    """
+    Displays the main page featuring the latest user-submitted thoughts
+    """
     model = Thought
     queryset = Thought.objects.order_by('-date_created')
     template_name = 'thoughts/view_thoughts.html'
@@ -189,6 +192,10 @@ class ThoughtDetail(View):
     Displays a single thought and related comments
     """
     def get(self, request, *args, **kwargs):
+        """
+        Gets a thought based on kwarg thought_id.
+        Includes comments, if liked by user and comment form
+        """
         thought_id = kwargs.get('thought_id')
         queryset = Thought.objects
         thought = get_object_or_404(queryset, id=thought_id)
@@ -260,6 +267,10 @@ class UserDetail(User):
     posts and likes given/received by a specified user
     """
     def view_user(request, user_id):
+        """
+        Returns context containing a user,
+        likes given and likes received based on a user id
+        """
         user = get_object_or_404(User, id=user_id)
 
         # All likes on user thoughts +  comments
