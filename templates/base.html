@@ -45,9 +45,8 @@
           <!-- Right-aligned items -->
           <ul class="navbar-nav ms-auto">
             {% if user.is_authenticated %}
-              <!-- Placeholder user profile picture -->
               <li class="nav-item dropdown">
-                <!-- Dropdown menu -->
+                <!-- User Dropdown menu -->
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <span id="nav-username">{{ request.user }}</span>
                 </a>
