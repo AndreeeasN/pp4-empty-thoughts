@@ -16,11 +16,10 @@ Empty Thoughts provides you with a canvas to voice these ideas, whether it's a p
 + [Database Schema](#database-schema)
 + [Features](#features)
   + [Existing Features](#existing-features)
-    + [Navigation](#navigation)
-    + [Main Page](#main-page)
-    + [Thought Detail Page](#thought-detail-page)
   + [Future Features](#future-features)
 + [Testing](#testing)
+  + [Manual Testing](#manual-testing)
+  + [Automated Testing](#automated-testing)
   + [Discovered Bugs](#discovered-bugs)
   + [Validator Testing](#validator-testing)
   + [Unfixed Bugs](#unfixed-bugs)
@@ -44,8 +43,8 @@ Project board can be found [here](https://github.com/users/AndreeeasN/projects/1
   - I can login to an account so I can view/post/like thoughts
   - I can view a list of posts so I can read interesting thoughts
   - I can leave comments so I can interact with those sharing similar interests/thoughts
-  - I can like/unlike individual posts so I can show which ones I enjoy
-  - I can search by category/author so I can find thoughts relevant to my interests
+  - I can like/unlike individual posts/comments so I can show which ones I enjoy
+  - I can search by category/author/tags so I can find thoughts relevant to my interests
   - I can mark my posts as anonymous so I can post private thoughts without fear of judgement
 
 #### As an admin
@@ -168,6 +167,206 @@ A larger view of specific thought, has exact same functionality as when viewed f
 Normally Django will use a connection to a temporary postgres database to avoid running queries against the production database when running automated tests, the free tier of elephantSQL does however not allow more than one database. 
 Due to this, tests have been carried out manually for each new feature introduced.
 
+### Manual Testing
+
+#### 1. Navbar
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+  - Website logo
+    - Redirects to the front page as intended.
+  - 'Home' Button
+    - Redirects to the front page as intended.
+    - Is correctly marked as active when not searching for posts.
+  - 'Search' Button
+    - Opens up the sidebar featuring the search form as intended.
+    - Correctly marked as active during a user search, this includes navigating to the next page of search results or when returning no search results.
+    - The Search sidebar retains functionality across all other pages as intended.
+  - 'Log in / Sign up' 
+    - Redirects to the login page as intended.
+    - Visible only when not logged in as intended.
+    - Link is correctly replaced with the User dropdown menu when logged in.
+  - User Dropdown menu
+    - Displays currently logged in User's username as intended.
+    - Correctly hides 'Admin Menu' link when not logged in as a superuser
+    - 'Log out' redirects to Sign out page as intented
+
+#### 2. Front page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+    - On smaller screen sizes the pagination bar will wrap around if many pages are available
+  - About section
+    - When logged out:
+      - Displays 'About' message as intended
+      - 'Log in' button redirects to login page as intended
+      - 'Sign up' button redirects to signup page as intended
+    - When logged in:
+      - Displays welcome message as intended
+      - 'Share new thought' button correctly redirects to 'Add new thought' page
+    - Thought List
+      - Thoughts
+        - See [Thoughts](#testing-thoughts)
+      - Correctly displays a maximum of 8 thought per page
+    - Pagination
+      - Enumerated page selector
+        - Correctly displays and highlights the current page
+        - Correctly redirects to intended page number on click
+      - 'Next' and 'Previous' buttons
+        - Correctly jumps forward or back one page on click
+        - Correctly hides if on the first / last page
+      - 'First' and 'Last' buttons
+        - Correctly jumps to the first / last available page on click
+        - Correctly hides if on the first/last page
+
+#### 3. Thoughts<a id="testing-thoughts"></a>
+  - Thought Title
+    - Redirects to the thought detail page as intended
+  - Thought Author
+    - Redirects to the author profile page as intended
+    - Displays as 'Anonymous' if thought is marked as anonymous as intended
+    - Displays Author name followed by '(You)' if owner of the post as intended
+    - Correctly displays time of day if specified by user
+  - Thought Tags
+    - Starts a search using clicked tag as intended
+  - Like / Comment count
+    - Clicking the like icon correctly adds / removes a like from the post and updates the counter
+    - Clicking the comment icon correctly redirects to the thought detail page as intended
+  - 'Edit' button
+    - Redirects to 'Edit thought' page as intended
+    - Only visible if logged in user is the owner of the post or a superuser as intended
+  - 'Delete' button
+    - Opens up the delete modal as intended
+  - 'Delete' modal
+    - Correctly display title of selected thought
+    - 'Cancel' and X buttons both cancel the deletion as intended
+    - Delete button correctly display the type of object ie. 'Delete thought'
+    - 'Delete Thought' button correctly redirects to delete url using thought id
+    - Redirects to home page on deletion as intended
+
+#### 4. Thought Details page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+    - On smaller screen sizes the thought like/comment counters and edit/delete buttons will stack as to prevent overlap
+  - Thought
+    - See [Thoughts](#testing-thoughts)
+  - Comment form
+    - Correctly limits the user to the max length of the Comment model
+    - The 'Anonymous' checkbox correctly marks the comment as anonymous upon posting
+    - 'Post Comment' correctly submits the comment to the thought page
+  - Comments
+    - Comment Author
+      - Redirects to the author profile page as intended
+      - Displays as 'Anonymous' if marked as anonymous as intended
+      - Displays Author name followed by '(You)' if user is owner of the post as intended
+    - Comment Timestamp
+      - Correctly displays submission date and time
+    - Like count
+      - Clicking the like icon correctly adds / removes a like from the post and updates the counter
+    - 'Delete' button
+      - Opens up the delete modal as intended
+    - 'Delete' modal
+      - Correctly displays title as 'Delete Comment?'
+      - 'Cancel' and X buttons both cancel the deletion as intended
+      - Delete button correctly display the type of object ie. 'Delete comment'
+      - 'Delete comment' button correctly redirects to delete url using the comment id
+      - Redirects to thought detail page on deletion as intended
+
+#### 5. User Details Page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+    - On smaller screen sizes the user feats will stack vertically as to maintain legibility
+  - Username and Signup date
+    - Correctly displays the specified author as a header
+    - Correctly shows account creation date as a subheader
+  - User Feats
+    - Correctly displays Thoughts / Comments submitted and Likes given / received
+  - 'Search for public posts' button
+    - Redirects to search page using the Author's username as search field as intended
+
+#### 6. 'Add new thought' page
+  - Authorization
+    - Correctly redirects user to login page if not logged in when entering page
+    - Correctly redirects user to login page if attempting to submit after logging out in a separate tab
+    - Redirects user to home page if logged in user is not superuser or owner of the post
+  - 'Add thought' form
+    - See [Thought Form](#testing-thought-form)
+  - 'Submit Thought' button
+    - Correctly submits thought form and creates new post without errors
+    - Redirects to main page as intended
+
+#### 7. 'Edit thought' page
+  - Authorization
+    - Correctly redirects user to login page if not logged in when entering page
+    - Correctly redirects user to login page if attempting to submit after logging out in a separate tab
+    - Redirects user to home page if logged in user is not superuser or owner of the post
+  - 'Edit thought' form
+    - Correctly auto-fills fields with pre-existing information 
+    - See [Thought Form](#testing-thought-form)
+  - 'Submit Thought' button
+    - Correctly submits thought form and creates new post without errors
+    - Redirects to main page as intended
+
+#### 8. Thought Form <a id="testing-thought-form"></a>
+  - Responsiveness
+      - Resizes well down to a minimum screen width of 320px
+      - On small-medium screen sizes the 'time' field will be given it's own row as to prevent overlap
+  - Form
+    - Correctly disallows user from submitting if 'Title' or 'Content' fields are empty
+    - Time selection widget correctly opens on click
+    - Tag selection
+      - Tag selection widget opens correctly upon clicking 
+      - Allows multiple selections as intended
+      - Allows removing tags from selection as intended
+  
+#### 9. Sign up Page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+  - Authorization
+    - Redirects user to main page if already logged in
+  - Sign up form
+    - Correctly allows signing up both with or without entering an E-mail
+    - Correctly disallows signing up under the following conditions:
+      - Missing Username or Password
+      - Password too short
+      - Password too common
+      - Password contains username
+      - Repeated password doesn't match first password
+  - 'Sign In' link
+    - Correctly redirects to sign in page
+
+#### 10. Sign in Page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+  - Authorization
+    - Redirects user to main page if already logged in
+  - Sign in form
+    - Correctly allows signing in using the corrects username and password
+    - Correctly disallows submitting without a username or password
+  - 'Sign Up' link
+    - Correctly redirects to sign up page
+
+#### 11. Sign out Page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+  - Authorization
+    - Redirects user to main page if already logged out
+  - 'Sign Out' button
+    - Correctly logs the user out
+    - Redirects user to main page as intended
+
+#### 12. 404 Page
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+  - 'Return Home' button
+    - Correctly redirects user to main page
+
+### Automated Testing
+While automated tests have not been widely utilized in this project, some tests have been written to test the following functionality:
+  - User can visit the home page
+  - User can visit the 'Add Thoughts' page
+  - User can open the 'Edit Thoughts' page using a thought id
+  - User can create a new thought using the 'Add Thoughts' page
+  - User can delete a pre-existing thought by using it's id 
+
 ### Discovered Bugs
 - When viewing post details, the author(user) and logged in user would overlap in the context
   - This would end up displaying the author of the post as the user currently logged in which ended up difficult to notice during development before introducing a second account
@@ -213,6 +412,9 @@ Due to this, tests have been carried out manually for each new feature introduce
   - All JS files pass through the [JSHint Validator](https://jshint.com/) without issues
 - Python
   - Python files pass through the [CI Python linter](https://pep8ci.herokuapp.com/) without issues
+  - The exception being settings.py containing a few strings exceeding the suggested PEP8 length limit.
+    - All but one are pre-made by django and as such have been left undisturbed
+    - The one added line is ```STATICFILES_STORAGE = 'cloudinary_storage.[...]'``` which contains a longer string. As this string is a full link I've opted to not split it for both legibility and to avoid any potential errors.
 - Lighthouse audit<br>
   ![Lighthouse Audit](static/images/readme/pp4-lighthouse.png)
 - The website has been tested to work in the following browsers:
@@ -234,31 +436,31 @@ Due to this, tests have been carried out manually for each new feature introduce
 - SQL - Postgres
 
 ### Frameworks, Libraries & Programs Used
-GitHub
-Visual Studio Code
-Django
-Bootstrap
-JQuery
-Font Awesome
-Google Fonts
-Balsamiq
-DrawSQL
-Paint.NET
-Favicon.io
+- GitHub
+- Visual Studio Code
+- Django
+- Bootstrap
+- JQuery
+- Font Awesome
+- Google Fonts
+- Balsamiq
+- DrawSQL
+- Paint.NET
+- Favicon.io
 
 ### Installed Packages
-Django
-django-allauth
-psycopg2-binary
-gunicorn
-django-crispy-forms
-crispy-bootstrap5 
-django-colorfield 
-django-select2 
-django-filter
-django-bootstrap-datepicker-plus
-dj3-cloudinary-storage
-dj_database_url
+- Django
+- django-allauth
+- psycopg2-binary
+- gunicorn
+- django-crispy-forms
+- crispy-bootstrap5 
+- django-colorfield 
+- django-select2 
+- django-filter
+- django-bootstrap-datepicker-plus
+- dj3-cloudinary-storage
+- dj_database_url
 
 ## Deployment
 
@@ -271,21 +473,23 @@ The app was deployed to [Heroku](https://www.heroku.com/) using the following st
     - dj_database_url
     - psycopg2
     - dj3-cloudinary-storage
+2. Create a requirements.txt file using the following command
+    - ```pip3 freeze --local > requirements.txt```
 2. Create a new app from the [Heroku dashboard](https://dashboard.heroku.com/apps)
 3. Select your heroku app from the menu and enter the 'Settings' tab
 4. Click 'Reveal Config Vars'
-5. Input all relevant key:value pairs 
-    - SECRET KEY : (Your secret key)
-    - PORT : 8000
-    - CLOUDINARY_URL : (Your Cloudinary API Environment variable)
-    - DATABASE_URL : (Your ElephantSQL postgres URL)
+5. Input all relevant key:value pairs
+    - ```SECRET KEY : (Your secret key)```
+    - ```PORT : 8000```
+    - ```CLOUDINARY_URL : (Your Cloudinary API Environment variable)```
+    - ```DATABASE_URL : (Your ElephantSQL postgres URL)```
 6. Underneath, click 'Add Buildpack' and select the Python Buildpack
 6. Add the following to your project settings.py:
-    - ALLOWED_HOSTS = [(Your heroku app url), '127.0.0.1']  (second address included for local testing)
-    - STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
-    - DATABASES = { 'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
+    - ```ALLOWED_HOSTS = [(Your heroku app url), '127.0.0.1']```  (second address included for local testing)
+    - ```STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'```
+    - ```DATABASES = { 'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }```
 7. Create a Procfile with the following line
-    - web: gunicorn (YOUR_APP_NAME).wsgi:application
+    - ```web: gunicorn (YOUR_APP_NAME).wsgi:application```
 8. Commit and push changes to GitHub
 9. Go to your Heroku app and select the 'Deploy' tab
 10. Select your deployment method, in our case we deployed through GitHub
