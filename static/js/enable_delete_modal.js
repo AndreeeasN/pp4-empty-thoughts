@@ -18,6 +18,7 @@ $(document).ready(function () {
       let deleteTitle = button.getAttribute('data-delete-title');
 
       deleteModalTitle.textContent = `Delete ${deleteTitle}?`;
+      btnDelete.textContent = `Delete ${deleteType}`;
       btnDelete.setAttribute('href', `/delete/${deleteType}/${deleteID}`);
 
       // Displays the modal
