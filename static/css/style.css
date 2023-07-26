@@ -69,7 +69,7 @@ footer{
 }
 
 /* Text shows up on failed log-in attempts */
-.errorlist, .nonfield{
+.errorlist, .alert-danger ul{
     list-style: none;
 }
 
