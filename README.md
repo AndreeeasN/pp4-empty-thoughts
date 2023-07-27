@@ -359,6 +359,14 @@ Due to this, tests have been carried out manually for each new feature introduce
   - 'Return Home' button
     - Correctly redirects user to main page
 
+#### 13. Footer
+  - Responsiveness
+    - Resizes well down to a minimum screen width of 320px
+    - On small-medium screen sizes the disclaimer and social links stack vertically as intended
+  - Social links
+    - The GitHub link opens in a new tab as intended
+    - The LinkedIn link opens in a new tab as intended
+
 ### Automated Testing
 While automated tests have not been widely utilized in this project, some tests have been written to test the following functionality:
   - User can visit the home page
