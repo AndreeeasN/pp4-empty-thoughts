@@ -45,6 +45,9 @@ class ThoughtForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    """
+    Simple form for submitting comments
+    """
     class Meta:
         model = Comment
         fields = ['content', 'anonymous']
